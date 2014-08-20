@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  The MIT License (MIT)
+  
+  Copyright (C) 2014 by Kuali Foundation
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+ 
+  The above copyright notice and this permission notice shall be included in
+
+  all copies or substantial portions of the Software.
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+-->
+
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="
+						http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+						http://www.springframework.org/schema/task
+						http://www.springframework.org/schema/task/spring-task-4.0.xsd
+				        http://www.springframework.org/schema/util
+    				    http://www.springframework.org/schema/util/spring-util-4.0.xsd
+						http://cxf.apache.org/jaxrs
+						http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<import resource="classpath:BlackberryPushSpringBeans.xml"/>
+	<task:annotation-driven />
+
+    <bean id="deviceDao" class="org.kuali.mobility.push.dao.DeviceDaoImpl">
+    </bean>
+    <bean id="pushDao" class="org.kuali.mobility.push.dao.PushDaoImpl"/>
+
+	<util:properties id="senderKeysProperties" location="classpath:push.senderkey.properties"/>
+	
+    <bean id="pushTimerBean" class="org.kuali.mobility.push.dao.PushInitBean">
+        <property name="pushService" ref="pushService" />
+	</bean>
+
+    <bean id="deviceFeedbackMonitorTimerBean" class="org.kuali.mobility.push.dao.DeviceFeedbackMonitor">
+        <property name="deviceService" ref="deviceService" />
+	</bean>
+    
+     <task:scheduled-tasks>
+        <task:scheduled ref="pushTimerBean" method="checkPushes" fixed-rate="${push.sendTimer}" />
+        <task:scheduled ref="deviceFeedbackMonitorTimerBean" method="checkDeviceFeedback" fixed-rate="${push.device.feedbackTimer}" />
+    </task:scheduled-tasks>
+
+	<bean name="iOSFeedbackConnectionFactory" class="org.kuali.mobility.push.factory.iOSFeedbackConnectionFactory" />
+	<bean name="iOSFeedbackConnectionPool" class="org.apache.commons.pool.impl.GenericObjectPool" depends-on="iOSFeedbackConnectionFactory">
+		<constructor-arg ref="iOSFeedbackConnectionFactory" />
+		<property name="whenExhaustedAction" value="1" />
+		<property name="maxActive" value="${push.apple.pool.maxConnections}" />
+		<property name="testOnBorrow" value="true" />
+		<property name="lifo" value="false" />
+		<property name="timeBetweenEvictionRunsMillis" value="${push.apple.pool.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${push.apple.pool.minEvictableIdleTimeMillis}" />
+	</bean>    
+    
+	<bean name="iOSConnectionFactory" class="org.kuali.mobility.push.factory.iOSConnectionFactory" />
+	<bean name="iOSConnectionPool" class="org.apache.commons.pool.impl.GenericObjectPool" depends-on="iOSConnectionFactory">
+		<constructor-arg ref="iOSConnectionFactory" />
+		<property name="whenExhaustedAction" value="1" />
+		<property name="maxActive" value="${push.apple.pool.maxConnections}" />
+		<property name="testOnBorrow" value="true" />
+		<property name="lifo" value="false" />
+		<property name="timeBetweenEvictionRunsMillis" value="${push.apple.pool.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${push.apple.pool.minEvictableIdleTimeMillis}" />
+	</bean>
+
+
+	<bean id="androidSendService" class="org.kuali.mobility.push.service.send.AndroidSendService" />
+	<bean id="iOSSendService" class="org.kuali.mobility.push.service.send.iOSSendService"/>
+	<bean id="blackberrySendService" class="org.kuali.mobility.push.service.send.BlackberrySendService"/>
+
+	<bean id="sendServiceDelegator" class="org.kuali.mobility.push.service.send.SendServiceDelegator">
+		<property name="senders">
+		    <map>
+		        <entry key="Android" value-ref="androidSendService"/>
+		        <entry key="iOS" value-ref="iOSSendService"/>
+		        <entry key="Blackberry" value-ref="blackberrySendService"/>
+		    </map>
+		</property>
+	</bean>
+
+	<bean id="senderService" class="org.kuali.mobility.push.service.SenderServiceImpl"/>
+
+	<bean id="pushService" class="org.kuali.mobility.push.service.PushServiceImpl" />
+	<bean id="pushMessageService" class="org.kuali.mobility.push.service.PushMessageServiceImpl" />
+	<bean id="deviceService" class="org.kuali.mobility.push.service.DeviceServiceImpl" />
+
+	<!-- Deprecated CXF Services -->
+	<bean id="cxfDeviceService" class="org.kuali.mobility.push.service.CXFDeviceService"/>
+	<bean id="cxfPushService" class="org.kuali.mobility.push.service.CXFPushService"/>
+	<bean id="cxfSenderService" class="org.kuali.mobility.push.service.CXFSenderService"></bean>
+
+    <bean id="deviceRestService" class="org.kuali.mobility.push.service.rest.DeviceServiceRestImpl"></bean>
+    <bean id="pushRestService" class="org.kuali.mobility.push.service.rest.PushServiceRestImpl"></bean>
+    <bean id="preferenceService" class="org.kuali.mobility.push.service.PreferenceServiceImpl"></bean>
+
+
+
+
+    <bean id="jackonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider">
+    </bean>
+
+
+
+	<jaxrs:server id="senderRestEndpoint" address="/sender">
+        <jaxrs:serviceBeans>
+            <ref bean="cxfSenderService" />
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json"/>
+            <entry key="xml" value="application/xml"/>
+        </jaxrs:extensionMappings>
+    </jaxrs:server>	
+		 
+    <jaxrs:server id="pushRestEndpoint" address="/push" >
+        <jaxrs:serviceBeans>
+            <ref bean="cxfPushService" />
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json"/>
+            <entry key="xml" value="application/xml"/>
+        </jaxrs:extensionMappings>
+    </jaxrs:server>
+
+    <jaxrs:server id="deviceRestEndpoint" address="/device">
+        <jaxrs:serviceBeans>
+            <ref bean="cxfDeviceService" />
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json"/>
+            <entry key="xml" value="application/xml"/>
+        </jaxrs:extensionMappings>
+    </jaxrs:server>
+
+    <!--
+        This is the service used between KME and this push service
+    -->
+    <jaxrs:server id="deviceRestServiceEndpoint" address="/device-api">
+        <jaxrs:serviceBeans>
+            <ref bean="deviceRestService" />
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json"/>
+            <entry key="xml" value="application/xml"/>
+        </jaxrs:extensionMappings>
+        <jaxrs:providers>
+            <ref bean="jackonProvider" />
+        </jaxrs:providers>
+    </jaxrs:server>
+
+    <jaxrs:server id="pushRestServiceEndpoint" address="/push-api">
+        <jaxrs:serviceBeans>
+            <ref bean="pushRestService" />
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json"/>
+            <entry key="xml" value="application/xml"/>
+        </jaxrs:extensionMappings>
+        <jaxrs:providers>
+            <ref bean="jackonProvider" />
+        </jaxrs:providers>
+    </jaxrs:server>
+
+    <jaxrs:server id="pushPreferencesServiceEndpoint" address="/preferences-api">
+        <jaxrs:serviceBeans>
+            <bean class="org.kuali.mobility.push.service.rest.PreferencesServiceRestImpl" >
+				<property name="preferenceService" ref="preferenceService"/>
+			</bean>
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json"/>
+            <entry key="xml" value="application/xml"/>
+        </jaxrs:extensionMappings>
+        <jaxrs:providers>
+            <ref bean="jackonProvider" />
+        </jaxrs:providers>
+    </jaxrs:server>
+
+    <jaxrs:server id="senderServiceEndpoint" address="/sender-api">
+        <jaxrs:serviceBeans>
+			<bean class="org.kuali.mobility.push.service.rest.SenderServiceRestImpl" >
+				<property name="senderService" ref="senderService"/>
+			</bean>
+        </jaxrs:serviceBeans>
+        <jaxrs:extensionMappings>
+            <entry key="json" value="application/json"/>
+            <entry key="xml" value="application/xml"/>
+        </jaxrs:extensionMappings>
+        <jaxrs:providers>
+            <ref bean="jackonProvider" />
+        </jaxrs:providers>
+    </jaxrs:server>
+</beans>

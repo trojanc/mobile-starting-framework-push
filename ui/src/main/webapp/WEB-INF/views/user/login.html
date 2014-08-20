@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout.html :: page">
+<head>
+</head>
+<body>
+<div th:fragment="primary-content">
+    <div class="alert alert-danger" th:unless="${message == null}">
+        <strong>Alert: </strong>${message}
+    </div>
+    <div class="container-fluid" style="margin-top: -20px; margin-bottom: -20px;">
+        <form th:action="@{/j_spring_security_check}" method="post" autocomplete="off" id="loginForm" role="form" class="form-signin">
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+            <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}" />
+            <input type='text' name='j_username' id="j_username" autocomplete="off" class="form-control" placeholder="Username" />
+            <input type='password' name='j_password' id="j_password" autocomplete="off" class="form-control" placeholder="Password"/>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Sign in</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+

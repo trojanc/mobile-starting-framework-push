@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!--
+Copyright 2014 The Kuali Foundation Licensed under the Educational
+Community License, Version 2.0 (the "License"); you may not use this file
+except in compliance with the License. You may obtain a copy of the License
+at http://www.osedu.org/licenses/ECL-2.0 Unless required by applicable law or
+agreed to in writing, software distributed under the License is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout.html :: page">
+<head>
+    <title th:text="#{push.devices.management.title}"></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/ui3/device/devices.css}" />
+</head>
+<body>
+<div th:fragment="primary-content" >
+<div id="theContentArea" ng-app="devicesApp" ng-controller="DevicesController" ng-init="init" backFunction="kmeNavLeft">
+	<div class="alert alert-danger" ng-repeat="error in errors.error">
+		{{error.name}}
+	</div>
+
+
+	<div id="mainDevicePage" class="list-group inset-content-10px" ng-show="showMainDevicePage" ng-init="showMainDevicePage=true">
+		<a ng-click="showPurgePage()" class="list-group-item">
+			<h5 class="list-group-item-heading"> <th:block th:text="#{push.devices.purge.title}" /><div class="glyphicon glyphicon-chevron-right pull-right"></div></h5>
+			<p class="list-group-item-text" th:text="#{push.devices.purge.title.subtitle}"></p>
+		</a>		
+		<a ng-click="showSearchPage()" class="list-group-item">
+			<h5 class="list-group-item-heading"><th:block th:text="#{push.devices.search.title}" /> <div class="glyphicon glyphicon-chevron-right pull-right"></div></h5>
+			<p class="list-group-item-text" th:text="#{push.devices.search.subtitle}"></p>
+		</a>
+	</div>
+
+
+	<div id="purgeDevicesPage" class="list-group inset-content-10px" ng-show="showPurgeDevicesPage" ng-init="showPurgeDevicesPage=false">
+	    <form>
+	    	<input type="hidden" id="inputId" name="inputId" ng-model="inputId" />
+
+	        
+	        <div class="form-group">	        
+	            <label for="inputUsername" th:text="#{push.devices.purge.deletebyusername}"></label>
+	            <div class="input-group">
+	                <input type="text" class="form-control" id="inputUsername" ng-model="inputUsername" th:placeholder="#{push.devices.username}" autocapitalize="none" />
+	                  <span class="input-group-btn">
+        				<button class="btn btn-kme" type="button" ng-click="deleteDevice('username')" ng-disabled="!(inputUsername)" th:text="#{push.devices.purge.delete}"></button>
+				      </span>
+	            </div>
+	        </div>
+	        	        
+	        <div class="form-group">	        
+	            <label for="inputUsername" th:text="#{push.devices.purge.deleteby}"></label>
+					<div class="btn-group">
+					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					    <th:block th:text="#{push.devices.purge.age}" /> <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu" role="menu">
+					    <li><a href="#" ng-click="deleteDevice('1month')" th:text="#{push.devices.purge.1month}"></a></li>
+					    <li><a href="#" ng-click="deleteDevice('3month')" th:text="#{push.devices.purge.3months}"></a></li>
+					    <li><a href="#" ng-click="deleteDevice('6month')" th:text="#{push.devices.purge.6months}"></a></li>
+					    <li><a href="#" ng-click="deleteDevice('1year')"  th:text="#{push.devices.purge.1year}"></a></li>
+					  </ul>
+					</div>				
+	        </div>
+
+	        <div class="form-group">	        
+	            <label for="inputUsername" th:text="#{push.devices.purge.deleteby}"></label>
+					<div class="btn-group">
+					  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					    <th:block th:text="#{push.device.type}"></th:block> <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu" role="menu">
+					    <li><a href="#" ng-click="deleteDevice('allios')" th:text="#{push.devices.purge.ios}"></a></li>
+					    <li><a href="#" ng-click="deleteDevice('allandroid')" th:text="#{push.devices.purge.android}"></a></li>
+					    <li><a href="#" ng-click="deleteDevice('allblackberry')" th:text="#{push.devices.purge.blackberry}"></a></li>
+					    <li><a href="#" ng-click="deleteDevice('allwindows')" th:text="#{push.devices.purge.windows}"></a></li>
+					    <li class="divider"></li>
+					    <li><a href="#" ng-click="deleteDevice('all')" th:text="#{push.devices.purge.all}"></a></li>
+					  </ul>
+					</div>
+	        </div>
+
+
+	        <div class="form-group pull-right">
+		        <a class="btn btn-kme" ng-click="cancelDelete()" th:text="#{push.device.cancel}"></a>
+	        </div>
+	    </form>
+	</div>
+
+		
+	<div id="searchDevicesPage" class="list-group inset-content-10px" ng-show="showSearchDevicesPage" ng-init="showSearchDevicesPage=false">
+		<div class="input-group">
+	    	<span class="input-group-addon"><div class="glyphicon glyphicon-search pull-right"></div></span>
+			<input type="text" class="form-control" ng-model="searchKeyword" ng-change="onKeywordChange()" th:placeholder="#{push.devices.management.search}" />
+			<span class="input-group-btn">
+		        <button class="btn btn-default" type="button" ng-click="clearSearch()"><span class="glyphicon glyphicon-remove"></span></button>
+      		</span>
+		</div>		
+		<div class="list-group" style="margin-top: 10px;" ng-show="!showSearchResults" ng-cloak="">
+			<div class="list-group-item">
+				<h5 class="list-group-item-heading" th:text="#{push.devices.search.at.least.three}"></h5>
+			</div>
+			<div class="list-group-item">
+				<p>
+					<strong>Simple Search</strong><br/>
+					Keyword = "jsmith ipad"<br/></p>
+				<p>
+					<strong>Parameterized Search</strong><br/>
+					Username = "user:jsmith"<br/>
+					Device Name = "device:ipad"<br/>
+					Device Type = ":ios" or ":android"<br/></p>
+				<p>
+					<strong>Combined Search</strong><br/>
+					"user:jsmith device:Bonk :android"<br/>
+					"u:jsmith d:Bonk :a"</p>				
+			</div>
+		</div>		
+		<div class="list-group" style="margin-top: 10px;" ng-show="!searchResults.length && showSearchResults" ng-cloak="">
+			<div class="list-group-item">
+				<h5 class="list-group-item-heading" th:text="#{push.devices.search.none.found}"></h5>
+			</div>
+		</div>	
+		<div class="list-group" style="margin-top: 10px;" ng-show="searchResults.length && showSearchResults" ng-cloak="">
+			<a ng-click="detailDevicePage(result)" class="list-group-item" ng-repeat="result in searchResults">
+				<h5 class="list-group-item-heading">{{result.deviceName}}<div class="glyphicon glyphicon-chevron-right pull-right"></div></h5>
+				<th:block th:text="#{push.devices.username}" /> : <span style="color:darkred;">{{result.username | nullUsername}}</span>
+			</a>
+		</div>
+	</div>
+	
+	
+	
+	<div id="deviceDetailPage" class="list-group inset-content-10px" ng-show="showDeviceDetailPage" ng-init="showDeviceDetailPage=false">
+		<div class="list-group" style="margin-top: 10px;">
+		    <div class="list-group-item list-header"><h5 class="list-group-item-heading">{{detailDeviceName}}</h5></div>
+			<div class="list-group-item">
+			<h5 class="list-group-item-heading" th:text="#{push.devices.username}"></h5>
+				<span style="color:darkred;">{{detailUsername | nullUsername}}</span>
+			</div>
+			<div class="list-group-item">
+				<h5 class="list-group-item-heading" th:text="#{push.device.type}"></h5>
+				{{detailDeviceType}}
+			</div>
+
+			<div class="list-group-item">
+				<h5 class="list-group-item-heading" th:text="#{push.device.devid}"></h5>
+				{{detailDevId}}
+			</div>
+			<div class="list-group-item">
+				<h5 class="list-group-item-heading" th:text="#{push.device.regid}"></h5>
+				{{detailRegId}}
+			</div>
+			<div class="list-group-item">
+				<h5 class="list-group-item-heading" th:text="#{push.device.registrationDate}"></h5>
+				{{detailRegDate | date:'medium'}}
+			</div>
+		</div>
+		<div class="list-group" style="margin-top: 10px;">
+	        <div class="form-group pull-right">
+   		        <a class="btn btn-default" ng-click="kmeNavLeft()" th:text="#{push.device.cancel}"></a>
+		        <a class="btn btn-default" ng-click="removeDevice()" th:text="#{push.device.remove}"></a>
+		        <a class="btn btn-kme" ng-click="sendPush()" th:text="#{push.message.send}"></a>
+	        </div>
+		</div>
+	</div>
+    <script type="text/javascript" th:src="@{/devices/js/devices.js}"></script>
+</div>
+</div>
+</body>
+</html>

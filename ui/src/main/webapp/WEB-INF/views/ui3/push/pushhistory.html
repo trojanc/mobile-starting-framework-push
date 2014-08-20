@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+Copyright 2014 The Kuali Foundation Licensed under the Educational
+Community License, Version 2.0 (the "License"); you may not use this file
+except in compliance with the License. You may obtain a copy of the License
+at http://www.osedu.org/licenses/ECL-2.0 Unless required by applicable law or
+agreed to in writing, software distributed under the License is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout.html :: page">
+<head>
+    <title th:text="#{push.history}"></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/ui3/device/push.css}" />
+</head>
+<body>
+<div th:fragment="primary-content" >
+    <div id="theContentArea" ng-app="pushHistoryApp" ng-controller="PushHistoryController" ng-init="init()" backFunction="kmeNavLeft">
+		<div class="alert alert-danger" ng-repeat="error in errors.error">{{error.name}}</div>
+
+		<div id="mainHistoryPage" class="list-group inset-content-10px"
+			ng-show="showMainHistoryPage" ng-init="showMainHistoryPage=true">
+			<div class="list-group-item list-header">Past Notifications</div>
+			<a ng-click="goTo(thisNotification.url)" class="list-group-item"
+				ng-repeat="thisNotification in notifications">
+				<h5 class="list-group-item-heading">
+					{{thisNotification.title}}
+					<div class="glyphicon glyphicon-chevron-right pull-right" ng-show="thisNotification.url.length" ng-cloak></div>
+				</h5>
+				<p class="list-group-item-text">
+				<p style="padding-bottom: 10px;">{{thisNotification.message}}</p>
+				Recipients: {{thisNotification.recipients}}<br> <span
+				ng-show="thisNotification.url.length" ng-cloak>URL:
+					{{thisNotification.url}}<br>
+			</span> Sent on {{thisNotification.sentTimeStamp | date:'medium'}}
+				</p>
+			</a>
+			<div id="prevnext" class="pull-right pagination-div">
+				<span pul>Showing Page {{currentPage}} , {{pageRecordStartIndex}} to {{pageRecordEndIndex}} Notifications out of  {{totalNotifications}}  Notifications</span>
+				<input type="button" class="btn prev" value="Prev" ng-click="goToPrevPage()"/> 
+				<input type="button" class="btn next" value="Next" ng-click="goToNextPage()"/>
+			</div>
+		</div>
+
+
+        <script type="text/javascript" th:src="@{/push/js/history.js}"></script>
+    </div>
+</div>
+</body>
+</html>

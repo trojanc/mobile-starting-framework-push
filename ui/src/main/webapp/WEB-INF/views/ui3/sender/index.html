@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--
+Copyright 2014 The Kuali Foundation Licensed under the Educational
+Community License, Version 2.0 (the "License"); you may not use this file
+except in compliance with the License. You may obtain a copy of the License
+at http://www.osedu.org/licenses/ECL-2.0 Unless required by applicable law or
+agreed to in writing, software distributed under the License is distributed
+on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+express or implied. See the License for the specific language governing
+permissions and limitations under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout.html :: page">
+<head>
+    <title th:text="#{push.senders}"></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/ui3/sender/sender.css}" />
+</head>
+<body>
+<div th:fragment="primary-content" >
+    <div id="theContentArea" ng-app="sendersApp" ng-controller="SendersController" ng-init="init()" backFunction="kmeNavLeft">
+	<div class="alert alert-danger" ng-repeat="error in errors.error">
+		{{error.name}}
+	</div>
+	
+	<div id="mainSenderPage" class="list-group inset-content-10px" ng-show="showMainSenderPage" ng-init="showMainSenderPage=true">
+		<a ng-click="newSender()" class="list-group-item">
+			<h5 class="list-group-item-heading"> <th:block th:text="#{push.senders.new.sender}"/><div class="glyphicon glyphicon-plus pull-right"></div></h5>
+			<p class="list-group-item-text" th:text="#{push.senders.new.sender.description}"></p>
+		</a>	
+	
+	    <div class="list-group-item list-header" th:text="#{push.senders.header}"></div>
+		<a ng-click="editSender(thisSender)" class="list-group-item" ng-repeat="thisSender in senders">
+	   		<h5 class="list-group-item-heading">{{thisSender.name}}<div class="glyphicon glyphicon-chevron-right pull-right"></div></h5>
+	   		<span style="color:darkred;" ng-show="thisSender.hidden" th:text="#{push.senders.non-hidden.sender}"></span>
+	      	<p class="list-group-item-text">{{thisSender.description}}</p>		
+		</a>
+	</div>
+	
+	<div id="newSenderPage" class="list-group inset-content-10px" ng-show="showNewSenderPage" ng-init="showNewSenderPage=false">
+	    <form>
+	    	<input type="hidden" id="inputId" name="inputId" ng-model="inputId">
+	        <div class="form-group">
+	            <label for="inputName" th:text="#{push.senders.name}"></label>
+	            <input type="text" class="form-control" id="inputName" ng-model="inputName" th:placeholder="#{push.senders.name}">
+	        </div>
+
+	        <div class="form-group">
+	            <label for="inputShortName" th:text="#{push.senders.shortname}"></label>
+	            <input type="text" class="form-control" id="inputShortName" ng-model="inputShortName" th:placeholder="#{push.senders.shortname}">
+	        </div>
+
+	        
+	        <div class="form-group">
+	            <label class="control-label" for="inputDescription" th:text="#{push.senders.description}"></label>
+                <textarea rows="3" class="form-control" id="inputDescription" ng-model="inputDescription" th:placeholder="#{push.senders.description}"></textarea>
+	        </div>
+	        
+	        <div class="form-group">	        
+	            <label for="inputSenderKey" th:text="#{push.senders.senderkey}"></label>
+	            <div class="input-group">
+	                <span class="input-group-btn">
+	 	               <button type="button" class="btn btn-default" ng-click="newKey()"><span class="glyphicon glyphicon-refresh"></span></button>
+	                </span>
+	                <input type="text" class="form-control" id="inputSenderKey" ng-model="inputSenderKey" placeholder="">
+	            </div>
+	        </div>
+
+	        <div class="form-group">
+	            <label class="control-label" th:text="#{push.senders.user.blockable}"></label>
+	            <div>
+	            	<input type="checkbox" name="inputUserBlockable" ng-model="inputUserBlockable" value="no"> <th:block th:text="#{push.senders.users.maynotblock}"/>
+	            </div>
+	        </div>
+
+	        <div class="form-group pull-right">
+		        <a class="btn btn-default" ng-click="cancelNewSender()" th:text="#{push.senders.cancel}"></a>
+		        <a class="btn btn-default" ng-click="deleteSender()" ng-show="showDeleteButton" th:text="#{push.senders.delete}"></a>
+		        <a class="btn btn-kme" ng-click="saveSender()" th:text="#{push.senders.save}"></a>
+	        </div>
+	    </form>
+	</div>
+    <script type="text/javascript" th:src="@{/pushsenders/js/sender.js}"></script>
+</div>
+</div>
+</body>
+</html>
