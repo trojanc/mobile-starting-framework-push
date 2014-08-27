@@ -565,6 +565,8 @@
 							<exclude>**/*.woff</exclude>
 							<exclude>**/*.eot</exclude>
 							<exclude>**/*.eot</exclude>
+							<exclude>**/*.csslint</exclude>
+
 							<exclude>**/webapp/libs/**</exclude>
 							<exclude>**/webapp/less/lessc/*</exclude>
 						</excludes>
