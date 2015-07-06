@@ -55,16 +55,6 @@
 			<artifactId>tomcat-servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<!-- Blackberry Push Dependencies -->
-		<!-- We need to host these dependencies from somewhere... -->
-		<dependency>
-		  <groupId>net.rim.pushsdk</groupId>
-		  <artifactId>pap</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.rim.pushsdk</groupId>
-			<artifactId>commons-pushsdk</artifactId>
-		</dependency>
 		<!-- Persistence dependencies -->
 		<!-- Was Commented out. -->
 		<dependency>
@@ -84,6 +74,7 @@
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
+			<classifier>jdk15</classifier>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.flexjson</groupId>

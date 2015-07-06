@@ -58,14 +58,12 @@
 
     <bean id="androidSendService" class="org.kuali.mobility.push.service.send.AndroidSendService" />
     <bean id="iOSSendService" class="org.kuali.mobility.push.service.send.iOSSendService"/>
-    <bean id="blackberrySendService" class="org.kuali.mobility.push.service.send.BlackberrySendService"/>
 
     <bean id="sendServiceDelegator" class="org.kuali.mobility.push.service.send.SendServiceDelegator">
         <property name="senders">
             <map>
                 <entry key="Android" value-ref="androidSendService"/>
                 <entry key="iOS" value-ref="iOSSendService"/>
-                <entry key="Blackberry" value-ref="blackberrySendService"/>
             </map>
         </property>
     </bean>

@@ -24,7 +24,6 @@
 
 package org.kuali.mobility.push.service.rest;
 
-import net.rim.pushsdk.commons.PushSDKProperties;
 import org.kuali.mobility.push.entity.Device;
 import org.kuali.mobility.push.entity.Push;
 import org.kuali.mobility.push.service.DeviceService;
@@ -60,8 +59,6 @@ public class PushServiceRestImpl implements PushServiceRest {
 	@Resource(name="kmeProperties")
 	private Properties kmeProperties;
 
-	@Resource(name="pushSDKProperties")
-	private PushSDKProperties bbProperties;
 
     @Override
     public PushResponse sendPush(SendPushRequest request) {
@@ -110,12 +107,6 @@ public class PushServiceRestImpl implements PushServiceRest {
 
 		// Android
 		config.put("android.senderId", kmeProperties.getProperty("push.google.gcm.senderId"));
-
-		// Blackberry
-		config.put("blackberry.appId", kmeProperties.getProperty("push.blackberry.appId"));
-		config.put("blackberry.pushPort", kmeProperties.getProperty("push.blackberry.native.port"));
-		config.put("blackberry.pushUrl", bbProperties.getSubscriptionQueryUrl());
-
         return new PushConfigResponse(config);
     }
 

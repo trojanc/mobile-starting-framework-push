@@ -48,7 +48,7 @@
 		<plugin.enforcer.version>1.3.1</plugin.enforcer.version>
 		<plugin.surefire.version>2.16</plugin.surefire.version>
 		<plugin.war.version>2.4</plugin.war.version>
-		<plugin.install.version>2.5.1</plugin.install.version>
+		<plugin.install.version>2.5.2</plugin.install.version>
 		<plugin.clean.version>2.5</plugin.clean.version>
 		<plugin.deploy.version>2.8.1</plugin.deploy.version>
 		<plugin.site.version>3.0-beta-3</plugin.site.version>
@@ -63,7 +63,7 @@
 		<project.license.url>http://opensource.org/licenses/MIT</project.license.url>
 
 		<!-- Dependency versions -->
-		<tomcat.version>7.0.42</tomcat.version>
+		<tomcat.version>8.0.23</tomcat.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-io.version>2.4</commons-io.version>
 		<commons-pool.version>1.6</commons-pool.version>
@@ -87,7 +87,7 @@
 		<hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
 		<jackson.version>2.3.3</jackson.version>
 		<flexjson.version>2.1</flexjson.version>
-		<json-lib.version>2.3</json-lib.version>
+		<json-lib.version>2.4</json-lib.version>
 		<junit.version>4.11</junit.version>
 		<mockito.version>1.9.5</mockito.version>
 		<thymeleaf.version>2.1.3.RELEASE</thymeleaf.version>
@@ -129,7 +129,7 @@
 			</dependency>
 
 			<!-- Blackberry Push Dependencies -->
-			<!-- We need to host these dependencies from somewhere... -->
+			<!-- We need to host these dependencies from somewhere...
 			<dependency>
 				<groupId>net.rim.pushsdk</groupId>
 				<artifactId>pap</artifactId>
@@ -140,7 +140,7 @@
 				<artifactId>commons-pushsdk</artifactId>
 				<version>1.2.0.29</version>
 			</dependency>
-
+			-->
 			<!-- Tomcat dependencies to replace javaee-api -->
 			<!--
 				This will resolve many unit test problems since these provide
@@ -149,7 +149,7 @@
 				aren't supported by tomcat without careful consideration.
 			-->
 			<dependency>
-				<groupId>org.apache.tomcat</groupId>
+					<groupId>org.apache.tomcat</groupId>
 				<artifactId>tomcat-catalina</artifactId>
 				<version>${tomcat.version}</version>
 				<scope>provided</scope>
@@ -380,6 +380,7 @@
 			<dependency>
 				<groupId>net.sf.json-lib</groupId>
 				<artifactId>json-lib</artifactId>
+				<classifier>jdk15</classifier>
 				<version>${json-lib.version}</version>
 			</dependency>
 			<!-- Persistence dependencies -->
