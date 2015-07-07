@@ -228,7 +228,7 @@ public class DeviceServiceImpl implements DeviceService {
 		List<Device> devices = findDevicesByKeyword(keyword);
 		LOG.info(devices.size() + " elements returned.");
 
-		String json = "";
+		String json;
 		if(devices.size() > 0){
 			Iterator<Device> i = devices.iterator();	
 			if(devices.size() > 1){
@@ -237,7 +237,7 @@ public class DeviceServiceImpl implements DeviceService {
 				json = "{\"total\":\"" + devices.size() + " Device Found.\" , \"devices\":[";
 			}			
 			while(i.hasNext()){
-				json += ((Device)i.next()).toJson();
+				json += i.next().toJson();
 				json += ",";
 			}
 			json = json.substring(0, json.length()-1);
@@ -258,7 +258,7 @@ public class DeviceServiceImpl implements DeviceService {
 		Iterator<Device> i = devices.iterator();
 		
 		while(i.hasNext()){
-			Device d = (Device)i.next();
+			Device d = i.next();
 			sDevices += "\"" + d.getDeviceId() + "\"," ;
 		}
 		
@@ -276,7 +276,7 @@ public class DeviceServiceImpl implements DeviceService {
     public String usernameFromDeviceId(@FormParam("deviceid") final String id) {  
 		Device device = findDeviceByDeviceId(id);
 		if(device == null){
-			return "{\"deviceExists\":false}";			
+			return "{\"deviceExists\":false}";
 		}
 		if(device.getUsername() == null || device.getUsername().length() == 0){
 			return "{\"deviceExists\":true,\"hasUsername\":false}";

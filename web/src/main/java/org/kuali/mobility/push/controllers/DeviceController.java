@@ -45,12 +45,12 @@ public class DeviceController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public String index() {
-        return "ui3/device/index.html";
+        return "device/index.html";
     }
 
     @RequestMapping(value = "/js/devices.js")
     public String getJavaScript() {
-        return "ui3/device/js/devices.js.jsp";
+        return "device/js/devices.js.jsp";
     }
 
     /**

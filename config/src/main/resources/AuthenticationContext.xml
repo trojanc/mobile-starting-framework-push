@@ -34,18 +34,18 @@
     <bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
 
     <security:authentication-manager>
-   <!--     <security:authentication-provider>
+       <security:authentication-provider>
             <security:user-service>
-                <security:user name="admin" password="admin" authorities="ROLE_USER" />
+                <security:user name="admin" password="admin" authorities="ROLE_PUSH_USER" />
             </security:user-service>
-        </security:authentication-provider>-->
-		<security:authentication-provider >
+        </security:authentication-provider>
+                <!-- <security:authentication-provider >
 			<security:password-encoder hash="sha-256" />
 			<security:jdbc-user-service
 					data-source-ref="dataSource"
 					users-by-username-query="SELECT USERNAME, PASSWORD, CASE ENABLED WHEN 1 THEN 'true' ELSE 'false' END 'ENABLED' FROM USERS WHERE USERNAME=?;"
 					authorities-by-username-query="SELECT u.USERNAME, r.NM FROM USERS u INNER JOIN USER_ROLES ur ON u.ID = ur.USER_ID INNER JOIN ROLES r ON ur.ROLE_ID = r.ID WHERE u.USERNAME=?;"/>
-		</security:authentication-provider>
+		</security:authentication-provider> -->
     </security:authentication-manager>
 
 

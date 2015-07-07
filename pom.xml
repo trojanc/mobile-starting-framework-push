@@ -31,7 +31,7 @@
 	<packaging>pom</packaging>
 	<name>Kuali Mobility Enterprise Push Services</name>
 	<description>Push services API and implementations for KME</description>
-	<url>http://${kuali.site.hostname}/mobility/${project.version}</url>
+	<url>https://github.com/trojanc/mobile-starting-framework-push</url>
 	<inceptionYear>2011</inceptionYear>
 	<scm>
 		<connection>scm:${project.scm.vendor}:https://github.com/tamerman/mobile-starting-framework-push</connection>
@@ -40,8 +40,8 @@
 	</scm>
 	<properties>
 		<!-- DevOps tweaks -->
-		<maven.min.version>3.0.4</maven.min.version>
-		<project.jdk.min.version>1.7.0-21</project.jdk.min.version>
+		<maven.min.version>3.3</maven.min.version>
+		<project.jdk.min.version>1.8.0</project.jdk.min.version>
 		<enforcer.phase>validate</enforcer.phase>
 
 		<!-- Plugins -->
@@ -537,6 +537,10 @@
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${plugin.compiler.version}</version>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
 				</plugin>
 				<plugin>
 					<artifactId>maven-jar-plugin</artifactId>

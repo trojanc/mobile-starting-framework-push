@@ -33,7 +33,6 @@
 						http://www.springframework.org/schema/task
 						http://www.springframework.org/schema/task/spring-task-3.1.xsd">
 
-    <import resource="classpath:BlackberryPushSpringBeans.xml"/>
     <task:annotation-driven />
 
     <bean id="pushTimerBean" class="org.kuali.mobility.push.dao.PushInitBean">

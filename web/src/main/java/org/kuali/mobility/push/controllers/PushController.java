@@ -221,7 +221,7 @@ public class PushController {
             uiModel.addAttribute("device", device);
 //        }
 
-        viewName = "ui3/push/index.html";
+        viewName = "push/index.html";
         return viewName;
     }
 
@@ -268,14 +268,14 @@ public class PushController {
 
             uiModel.addAttribute("push", push);
             
-            viewName = "ui3/push/index.html";
+            viewName = "push/index.html";
 //        }
         return viewName;
     }
 
     @RequestMapping(value = "/js/history.js")
     public String getHistoryJavaScript(Model uiModel, HttpServletRequest request) {
-        return "ui3/push/js/history.js.jsp";
+        return "push/js/history.js.jsp";
     }
     
     @RequestMapping(value = "/js/push.js")
@@ -297,7 +297,7 @@ public class PushController {
         uiModel.addAttribute(RECIPIENTS, RECIPIENTS_MAP);
         uiModel.addAttribute("stockPushMessages", stockPushMessages);
     	
-        return "ui3/push/js/push.js.jsp";
+        return "push/js/push.js.jsp";
     }
 
     /**
@@ -311,7 +311,7 @@ public class PushController {
     @RequestMapping(value = "/history", method = RequestMethod.GET)
     public String history(HttpServletRequest request, Model uiModel,
                           @RequestParam(value = "key", required = false) String key) {
-       return "ui3/push/pushhistory.html";
+       return "push/pushhistory.html";
     }
 
     /**

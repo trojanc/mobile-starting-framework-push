@@ -39,12 +39,12 @@ public class SenderController {
      */
     @RequestMapping(value = "/pushsenders", method = RequestMethod.GET)    
     public String senders() {
-    	return  "ui3/sender/index.html";
+    	return  "sender/index.html";
     }
 
     @RequestMapping(value = "/js/sender.js")
     public String getJavaScript(Model uiModel) {
-        return "ui3/sender/js/sender.js.jsp";
+        return "sender/js/sender.js.jsp";
     }
 
 }

@@ -36,6 +36,6 @@ public class HomeController {
     @RequestMapping(value={"home","index"})
     public String home(){
 
-        return "ui3/home.html";
+        return "home.html";
     }
 }
