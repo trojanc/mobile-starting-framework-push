@@ -40,13 +40,13 @@
 	
 	<div id="mainSenderPage" class="list-group inset-content-10px" ng-show="showMainSenderPage" ng-init="showMainSenderPage=true">
 		<a ng-click="newSender()" class="list-group-item">
-			<h5 class="list-group-item-heading"> <th:block th:text="#{push.senders.new.sender}"/><div class="glyphicon glyphicon-plus pull-right"></div></h5>
+			<h4 class="list-group-item-heading"> <th:block th:text="#{push.senders.new.sender}"/><div class="glyphicon glyphicon-plus pull-right"></div></h4>
 			<p class="list-group-item-text" th:text="#{push.senders.new.sender.description}"></p>
 		</a>	
 	
 	    <div class="list-group-item list-header" th:text="#{push.senders.header}"></div>
 		<a ng-click="editSender(thisSender)" class="list-group-item" ng-repeat="thisSender in senders">
-	   		<h5 class="list-group-item-heading">{{thisSender.name}}<div class="glyphicon glyphicon-chevron-right pull-right"></div></h5>
+	   		<h4 class="list-group-item-heading">{{thisSender.name}}<div class="glyphicon glyphicon-chevron-right pull-right"></div></h4>
 	   		<span style="color:darkred;" ng-show="thisSender.hidden" th:text="#{push.senders.non-hidden.sender}"></span>
 	      	<p class="list-group-item-text">{{thisSender.description}}</p>		
 		</a>

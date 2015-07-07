@@ -41,11 +41,11 @@
 
 	<div id="mainDevicePage" class="list-group inset-content-10px" ng-show="showMainDevicePage" ng-init="showMainDevicePage=true">
 		<a ng-click="showPurgePage()" class="list-group-item">
-			<h5 class="list-group-item-heading"> <th:block th:text="#{push.devices.purge.title}" /><div class="glyphicon glyphicon-chevron-right pull-right"></div></h5>
+			<h4 class="list-group-item-heading"> <th:block th:text="#{push.devices.purge.title}" /><div class="glyphicon glyphicon-chevron-right pull-right"></div></h4>
 			<p class="list-group-item-text" th:text="#{push.devices.purge.title.subtitle}"></p>
 		</a>		
 		<a ng-click="showSearchPage()" class="list-group-item">
-			<h5 class="list-group-item-heading"><th:block th:text="#{push.devices.search.title}" /> <div class="glyphicon glyphicon-chevron-right pull-right"></div></h5>
+			<h4 class="list-group-item-heading"><th:block th:text="#{push.devices.search.title}" /> <div class="glyphicon glyphicon-chevron-right pull-right"></div></h4>
 			<p class="list-group-item-text" th:text="#{push.devices.search.subtitle}"></p>
 		</a>
 	</div>
@@ -116,7 +116,7 @@
 		</div>		
 		<div class="list-group" style="margin-top: 10px;" ng-show="!showSearchResults" ng-cloak="">
 			<div class="list-group-item">
-				<h5 class="list-group-item-heading" th:text="#{push.devices.search.at.least.three}"></h5>
+				<h4 class="list-group-item-heading" th:text="#{push.devices.search.at.least.three}"></h4>
 			</div>
 			<div class="list-group-item">
 				<p>
@@ -135,12 +135,12 @@
 		</div>		
 		<div class="list-group" style="margin-top: 10px;" ng-show="!searchResults.length && showSearchResults" ng-cloak="">
 			<div class="list-group-item">
-				<h5 class="list-group-item-heading" th:text="#{push.devices.search.none.found}"></h5>
+				<h4 class="list-group-item-heading" th:text="#{push.devices.search.none.found}"></h4>
 			</div>
 		</div>	
 		<div class="list-group" style="margin-top: 10px;" ng-show="searchResults.length && showSearchResults" ng-cloak="">
 			<a ng-click="detailDevicePage(result)" class="list-group-item" ng-repeat="result in searchResults">
-				<h5 class="list-group-item-heading">{{result.deviceName}}<div class="glyphicon glyphicon-chevron-right pull-right"></div></h5>
+				<h4 class="list-group-item-heading">{{result.deviceName}}<div class="glyphicon glyphicon-chevron-right pull-right"></div></h4>
 				<th:block th:text="#{push.devices.username}" /> : <span style="color:darkred;">{{result.username | nullUsername}}</span>
 			</a>
 		</div>
@@ -150,26 +150,26 @@
 	
 	<div id="deviceDetailPage" class="list-group inset-content-10px" ng-show="showDeviceDetailPage" ng-init="showDeviceDetailPage=false">
 		<div class="list-group" style="margin-top: 10px;">
-		    <div class="list-group-item list-header"><h5 class="list-group-item-heading">{{detailDeviceName}}</h5></div>
+		    <div class="list-group-item list-header"><h4 class="list-group-item-heading">{{detailDeviceName}}</h4></div>
 			<div class="list-group-item">
-			<h5 class="list-group-item-heading" th:text="#{push.devices.username}"></h5>
+			<h4 class="list-group-item-heading" th:text="#{push.devices.username}"></h4>
 				<span style="color:darkred;">{{detailUsername | nullUsername}}</span>
 			</div>
 			<div class="list-group-item">
-				<h5 class="list-group-item-heading" th:text="#{push.device.type}"></h5>
+				<h4 class="list-group-item-heading" th:text="#{push.device.type}"></h4>
 				{{detailDeviceType}}
 			</div>
 
 			<div class="list-group-item">
-				<h5 class="list-group-item-heading" th:text="#{push.device.devid}"></h5>
+				<h4 class="list-group-item-heading" th:text="#{push.device.devid}"></h4>
 				{{detailDevId}}
 			</div>
 			<div class="list-group-item">
-				<h5 class="list-group-item-heading" th:text="#{push.device.regid}"></h5>
+				<h4 class="list-group-item-heading" th:text="#{push.device.regid}"></h4>
 				{{detailRegId}}
 			</div>
 			<div class="list-group-item">
-				<h5 class="list-group-item-heading" th:text="#{push.device.registrationDate}"></h5>
+				<h4 class="list-group-item-heading" th:text="#{push.device.registrationDate}"></h4>
 				{{detailRegDate | date:'medium'}}
 			</div>
 		</div>
