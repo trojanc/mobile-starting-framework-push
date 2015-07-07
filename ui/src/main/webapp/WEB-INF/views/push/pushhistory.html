@@ -32,6 +32,7 @@
 </head>
 <body>
 <div th:fragment="primary-content" >
+	<div class="container">
     <div id="theContentArea" ng-app="pushHistoryApp" ng-controller="PushHistoryController" ng-init="init()" backFunction="kmeNavLeft">
 		<div class="alert alert-danger" ng-repeat="error in errors.error">{{error.name}}</div>
 
@@ -62,6 +63,7 @@
 
         <script type="text/javascript" th:src="@{/push/js/history.js}"></script>
     </div>
+	</div>
 </div>
 </body>
 </html>

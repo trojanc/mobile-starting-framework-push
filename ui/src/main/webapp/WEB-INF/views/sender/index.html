@@ -32,6 +32,7 @@
 </head>
 <body>
 <div th:fragment="primary-content" >
+	<div class="container">
     <div id="theContentArea" ng-app="sendersApp" ng-controller="SendersController" ng-init="init()" backFunction="kmeNavLeft">
 	<div class="alert alert-danger" ng-repeat="error in errors.error">
 		{{error.name}}
@@ -93,6 +94,7 @@
 		        <a class="btn btn-kme" ng-click="saveSender()" th:text="#{push.senders.save}"></a>
 	        </div>
 	    </form>
+	</div>
 	</div>
     <script type="text/javascript" th:src="@{/pushsenders/js/sender.js}"></script>
 </div>

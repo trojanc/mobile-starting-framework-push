@@ -32,6 +32,7 @@
 </head>
 <body>
 <div th:fragment="primary-content" >
+	<div class="container">
     <div id="theContentArea" ng-app="pushApp" ng-controller="PushController" ng-init="init()" backFunction="kmeNavLeft">
 	<div class="alert alert-danger" ng-repeat="error in errors.error">
 		{{error.name}}
@@ -103,6 +104,7 @@
 
 
         <script type="text/javascript" th:src="@{/push/js/push.js}"></script>
+</div>
 </div>
 </div>
 </body>
