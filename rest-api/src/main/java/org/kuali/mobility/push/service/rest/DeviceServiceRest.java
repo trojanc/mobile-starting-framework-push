@@ -27,6 +27,7 @@ package org.kuali.mobility.push.service.rest;
 import org.kuali.mobility.push.entity.Device;
 import org.kuali.mobility.push.service.rest.pojo.DeviceResponse;
 import org.kuali.mobility.push.service.rest.pojo.DevicesResponse;
+import org.kuali.mobility.push.service.rest.pojo.ServiceObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -84,6 +85,18 @@ public interface DeviceServiceRest {
     @Path("/findDeviceByDeviceId")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	DeviceResponse findDeviceByDeviceId(@QueryParam(value="deviceId") String deviceId);
+
+
+    @GET
+    @Path("/findDeviceByUsername")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    DevicesResponse findDeviceByUsername(@QueryParam(value="username") String username);
+
+
+    @DELETE
+    @Path("/deleteDeviceByDeviceId")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    ServiceObject deleteDeviceByDeviceId(@QueryParam(value="deviceId") String deviceId);
 
 
 }

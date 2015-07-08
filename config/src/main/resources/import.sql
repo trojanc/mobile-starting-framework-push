@@ -36,7 +36,7 @@ insert into HIBERNATE_SEQUENCES (SEQUENCE_NAME,SEQUENCE_NEXT_HI_VALUE) values ('
 INSERT INTO KME_PSH_MSG_T (ID, EMR, MSG, PST_TS, RCPT, SNDR, TTL, URL, VER_NBR) VALUES (1,0x01,'A Tornado warning has been issued for the area near campus and downtown. Please report to a shelter until all-clear has been sounded.','2014-04-29 13:40:26',1000,'mtwagner','Tornado Warning','http://protect.iu.edu',0);
 INSERT INTO KME_PSH_MSG_T (ID, EMR, MSG, PST_TS, RCPT, SNDR, TTL, URL, VER_NBR) VALUES (2,0x00,'Once you log into a CAS protected tool (such as My Classes or Classifieds) the push notifications you receive will be tailored specifically to you.','2014-04-29 13:40:26',100,'barnetjm','Log into a protected tool','',0);
 INSERT INTO KME_PSH_MSG_T (ID, EMR, MSG, PST_TS, RCPT, SNDR, TTL, URL, VER_NBR) VALUES (3,0x00,'Check out the new {BLANK} in KME.','2014-05-19 17:25:34',-1,'KME_PUSH','New Feature in KME','',1);
-insert into HIBERNATE_SEQUENCES (SEQUENCE_NAME,SEQUENCE_NEXT_HI_VALUE) values ('KME_PSH_MSG_T',4);
+INSERT INTO HIBERNATE_SEQUENCES (SEQUENCE_NAME,SEQUENCE_NEXT_HI_VALUE) values ('KME_PSH_MSG_T',4);
 
 -- Insert senders
 INSERT INTO KME_PSH_SNDR_T (ID, DSCRP, HDN, NM, PST_TS, SENDER_KEY, SNM, USR, VER_NBR) VALUES (1,'General Push notifications from KME',0x01,'KME Notifications',NULL,'3AbHRDjirFn2hvii4Pq3','KME_PUSH',NULL,0);

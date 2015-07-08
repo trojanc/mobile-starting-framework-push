@@ -28,10 +28,13 @@ import org.kuali.mobility.push.entity.Device;
 import org.kuali.mobility.push.service.DeviceService;
 import org.kuali.mobility.push.service.rest.pojo.DeviceResponse;
 import org.kuali.mobility.push.service.rest.pojo.DevicesResponse;
+import org.kuali.mobility.push.service.rest.pojo.ServiceObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * A restful service implementation for devices
@@ -79,6 +82,20 @@ public class DeviceServiceRestImpl implements DeviceServiceRest {
 	@Override
 	public DeviceResponse findDeviceByDeviceId(String deviceId) {
 		return new DeviceResponse(deviceService.findDeviceByDeviceId(deviceId));
+	}
+
+	@Override
+	public DevicesResponse findDeviceByUsername(String username) {
+		List<Device> devices = deviceService.findDevicesByUsername(username);
+		DevicesResponse response = new DevicesResponse(devices);
+		return response;
+	}
+
+	@Override
+	public ServiceObject deleteDeviceByDeviceId(String deviceId) {
+		Device device = deviceService.findDeviceByDeviceId(deviceId);
+		deviceService.removeDevice(device);
+		return new ServiceObject();
 	}
 
 	public void setDeviceService(DeviceService deviceService){

@@ -165,42 +165,7 @@ public class CXFDeviceService {
     	} 
 		return "{\"status\":\"OK\", \"count\":\"" + deleted + "\"}";
     }
-	
-	@POST
-	@Path("/remove")
-	public Response removeDevice(@RequestBody String data){
-		LOG.info("----Remove Device: " + data);
-        if (data == null) {
-            return Response.status(Response.Status.NO_CONTENT.getStatusCode()).build();
-        }
 
-        JSONObject queryParams;
-        try {
-            queryParams = (JSONObject) JSONSerializer.toJSON(data);
-            LOG.info(queryParams.toString());
-        } catch (JSONException je) {
-            LOG.error("JSONException in :" + data + " : " + je.getMessage());
-			return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
-        }		
-		
-        String devId = queryParams.getString("deviceId");
-		LOG.info("----Remove Device: " + devId);
-		
-        Device deviceToDelete = getDeviceService().findDeviceByDeviceId(devId);
-		LOG.info(deviceToDelete.toString());
-        
-        if (deviceToDelete != null) {
-            LOG.debug("Will delete device with Id: " + deviceToDelete.getId());
-            if (getDeviceService().removeDevice(deviceToDelete)) {
-                LOG.debug("Did delete device.");
-        		return Response.status(Response.Status.OK.getStatusCode()).build();
-            }else{
-            	return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
-            }
-        }
-		return Response.status(Response.Status.OK.getStatusCode()).build();
-	}
-	
 	@GET
 	@Path("/counts")
 	public String getDeviceCounts(){
@@ -213,129 +178,6 @@ public class CXFDeviceService {
 				
 		return "{\"all\":\"" + all + "\",\"iOS\":\"" + iOS +"\",\"android\":\"" + android + "\",\"blackberry\":\""+blackberry+"\",\"windows\":\"" + windows + "\",\"unregistered\":\"" + unreg + "\" }";
 	}
-	
-	/**
-	 * A controller method for registering a device for push notifications as defined by a JSON formatted string. 
-	 * 
-	 * @param data JSON formatted string describing a device to be register for push notifications.
-	 * @return
-	 */
-	@GET
-    @Path("/register")
-	public Response register(@Context MessageContext context, @QueryParam(value="data") String data) {
-		HttpServletRequest request = context.getHttpServletRequest();
-		LOG.info("-----Register-----");
-		if(data == null){
-			return Response.status(Response.Status.NO_CONTENT.getStatusCode()).build();
-		} 
-
-		JSONObject queryParams;
-		try{
-			queryParams = (JSONObject) JSONSerializer.toJSON(data);
-			LOG.info(queryParams.toString());
-		}catch(JSONException je){
-			LOG.error("JSONException in :" + data + " : " + je.getMessage());
-			return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
-		}
-			
-		Device device = new Device();
-		device.setDeviceName(queryParams.getString("name"));
-		device.setDeviceId(queryParams.getString("deviceId"));
-		device.setRegId(queryParams.getString("regId"));
-		device.setType(queryParams.getString("type"));
-		
-		// We might not have a username yet
-		if (queryParams.containsKey(USERNAME)){
-			device.setUsername(queryParams.getString(USERNAME));
-		}
-		device.setPostedTimestamp(new Timestamp(System.currentTimeMillis()));
-		LOG.info("\n-----New Device-----" + device.toString());
-
-		Device temp = getDeviceService().findDeviceByDeviceId(device.getDeviceId());
-
-		// If the device already exists, update. 
-		try {
-			if(temp != null){
-				LOG.info("-----Device already exists." + temp.toString());
-				temp.setDeviceName(queryParams.getString("name"));
-				temp.setRegId(queryParams.getString("regId"));
-				temp.setType(queryParams.getString("type"));
-				// We might not have a username yet
-				if (queryParams.containsKey(USERNAME)){
-					temp.setUsername(queryParams.getString(USERNAME));
-				}
-				temp.setPostedTimestamp(new Timestamp(System.currentTimeMillis()));
-				getDeviceService().saveDevice(temp);
-			}else{
-				LOG.info("-----Device Doesn't already exist." + device.toString());
-				getDeviceService().saveDevice(device);
-			}
-		} catch (Exception e) {
-			LOG.error("Exception while trying to update device", e);
-			return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
-		} 		
-		return Response.status(Response.Status.OK.getStatusCode()).build();
-	}
-	
-	/**
-	 * CXF Service method for updating a pre-existing registered device. 
-	 * 
-	 * @param data A JSON formatted string describing details of a device to update.
-	 * @return
-	 */
-	@GET
-    @Path("/update")
-	public Response update(@Context MessageContext context, @QueryParam(value="data") String data) {
-		HttpServletRequest request = context.getHttpServletRequest();
-		LOG.info("-----Register-----");
-		if(data == null){
-			return Response.status(Response.Status.OK.getStatusCode()).build();
-		} 
-
-		JSONObject queryParams;
-		try{
-			queryParams = (JSONObject) JSONSerializer.toJSON(data);
-			LOG.info(queryParams.toString());
-		}catch(JSONException je){
-			LOG.error("JSONException in :" + data + " : " + je.getMessage());
-			return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
-		}
-
-		Device temp = getDeviceService().findDeviceByDeviceId(queryParams.getString("deviceId"));
-
-		// If the device already exists, update.
-		if(temp != null){
-			LOG.info("-----Device already exists." + temp.toString());
-			// Remove this device from the logged user's profile if it exists.
-//			User user = getUserDao().loadUserByLoginName(temp.getUsername());
-//			if( user != null ) {
-//				user.removeAttribute(AuthenticationConstants.DEVICE_ID,temp.getDeviceId());
-//				getUserDao().saveUser(user);
-//			}
-			temp.setDeviceName(queryParams.getString("name"));
-			temp.setUsername(queryParams.getString(USERNAME));
-			temp.setPostedTimestamp(new Timestamp(System.currentTimeMillis()));
-			getDeviceService().saveDevice(temp);
-
-			// Find the real user and set the new device.
-//			User user2 = (User)request.getSession().getAttribute(AuthenticationConstants.KME_USER_KEY);
-//			if( user2 == null ) {
-//				LOG.error("No user found in request. This should never happen!");
-//			} else if( user2.isPublicUser() ) {
-//				LOG.debug("Public user found, no user profile updates necessary.");
-//			} else if( !user2.getLoginName().equals(temp.getUsername()) ) {
-//				LOG.debug("User on device does not match user in session! This should never happen either.");
-//			} else if( user2.attributeExists(AuthenticationConstants.DEVICE_ID,temp.getDeviceId())) {
-//				LOG.debug("Device id already exists on user and no action needs to be taken.");
-//			} else {
-//				user2.addAttribute(AuthenticationConstants.DEVICE_ID,temp.getDeviceId());
-//				getUserDao().saveUser(user2);
-//			}
-
-		}
-		return Response.status(Response.Status.OK.getStatusCode()).build();
-	}
-	
 	
 	/**
 	 * CXF Service method for retrieving devices based on a keyword search. 
@@ -367,51 +209,8 @@ public class CXFDeviceService {
 		}		
 		return json;
     }
-	
-	/**
-	 * CXF Service method for retrieving a list of device associated with a given username. 
-	 * @param username
-	 * @return
-	 */
-	@POST
-    @Path("/username/")
-    public String devicesFromUsername(@FormParam("username") final String username) {  
-		List<Device> devices = getDeviceService().findDevicesByUsername(username);
-		String result = "{\"username\":\"" + username + "\",\"devices\":[";
-		String sDevices = "";
-		Iterator<Device> i = devices.iterator();
-		
-		while(i.hasNext()){
-			Device d = (Device)i.next();
-			sDevices += "\"" + d.getDeviceId() + "\"," ;
-		}
-		
-		if(sDevices.length() > 0){
-			sDevices = sDevices.substring(0, sDevices.length() - 1);
-		}
-		
-		result += sDevices + "]}";
-		return result;
-	}
-	
-	/**
-	 * CXF Service method for retrieving a username for a given device based on the deviceId. 
-	 * @param id
-	 * @return
-	 */
-	@POST
-    @Path("/deviceid/")
-    public String usernameFromDeviceId(@FormParam("deviceid") final String id) {  
-		Device device = getDeviceService().findDeviceByDeviceId(id);
-		if(device == null){
-			return "{\"deviceExists\":false}";			
-		}
-		if(device.getUsername() == null || device.getUsername().length() == 0){
-			return "{\"deviceExists\":true,\"hasUsername\":false}";
-		}else{
-			return "{\"deviceExists\":true,\"hasUsername\":true,\"username\":\"" + device.getUsername() + "\"}";
-		}
-	}
+
+
 
 	/**
 	 * @return the deviceService

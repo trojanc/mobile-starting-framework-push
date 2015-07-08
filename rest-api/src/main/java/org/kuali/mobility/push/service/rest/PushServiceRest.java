@@ -42,16 +42,16 @@ public interface PushServiceRest {
     @Path("/sendPush")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PushResponse sendPush(SendPushRequest request);
+    PushResponse sendPush(SendPushRequest request);
 
 
     @GET
     @Path("/pushConfig")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PushConfigResponse getPushConfig();
+    PushConfigResponse getPushConfig();
 
     @GET
     @Path("/findPushById")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PushResponse findPushById(@QueryParam(value="id") Long pushId);
+    PushResponse findPushById(@QueryParam(value="id") Long pushId);
 }
