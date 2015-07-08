@@ -73,11 +73,7 @@ public class PushController {
 	@Autowired
 	@Qualifier("kmeProperties")
 	private Properties kmeProperties;
-	
-	@Autowired
-	@Qualifier("senderKeysProperties")
-	private Properties senderKeysProperties;
-	
+
 	
 	/**
 	 * A reference 
@@ -564,18 +560,4 @@ public class PushController {
         this.kmeProperties = kmeProperties;
     }
 
-	/**
-	 * @return the senderKeysProperties
-	 */
-	public Properties getSenderKeysProperties() {
-		return senderKeysProperties;
-	}
-
-
-	/**
-	 * @param senderKeysProperties the senderKeysProperties to set
-	 */
-	public void setSenderKeysProperties(Properties senderKeysProperties) {
-		this.senderKeysProperties = senderKeysProperties;
-	}
 }

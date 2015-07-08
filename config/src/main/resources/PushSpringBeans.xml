@@ -45,8 +45,6 @@
     </bean>
     <bean id="pushDao" class="org.kuali.mobility.push.dao.PushDaoImpl"/>
 
-	<util:properties id="senderKeysProperties" location="classpath:push.senderkey.properties"/>
-	
     <bean id="pushTimerBean" class="org.kuali.mobility.push.dao.PushInitBean">
         <property name="pushService" ref="pushService" />
 	</bean>

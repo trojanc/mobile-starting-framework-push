@@ -79,10 +79,7 @@ public class CXFPushService {
 	@Autowired
 	@Qualifier("kmeProperties")
 	private Properties kmeProperties;
-	
-	@Autowired
-	@Qualifier("senderKeysProperties")
-	private Properties senderKeysProperties;
+
 	
 	@Resource(name = "messageSource")
 	private MessageSource messageSource;
@@ -157,29 +154,7 @@ public class CXFPushService {
 			url = queryParams.getString("url");
 			senderKey = queryParams.getString("senderKey");
 			sender = this.getSenderService().findSenderBySenderKey(senderKey).getShortName();
-			
-			String source = getKmeProperties().getProperty("push.sender.key.source", "database");
-			if("database".equalsIgnoreCase(source)){
-				LOG.info("Getting SenderKeys from database.");
-				Sender senderObj = senderService.findSenderBySenderKey(senderKey);
-				if (senderObj == null) {
-					LOG.info("---- " + senderKey + " is Not in LHM. May not Send Push Notifications");
-					return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
-				} else {
-					sender = senderObj.getShortName();
-				}
-			}else if("properties".equalsIgnoreCase(source)){
-				LOG.info("Getting SenderKeys from properties file.");
-				String shortName = getSenderKeysProperties().getProperty(senderKey);
-				if(shortName == null){
-					LOG.info("---- " + senderKey + " is Not in LHM. May not Send Push Notifications");
-					return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
-				}else{
-					sender = shortName;
-				}
-			}
-			
-			
+
 			if (queryParams.has(RECIPIENTS)) {
 				if ( "net.sf.json.JSONArray".equals(queryParams.get(RECIPIENTS).getClass().getName()) ) {
 
@@ -362,20 +337,6 @@ public class CXFPushService {
 	 */
 	public void setKmeProperties(Properties kmeProperties) {
 		this.kmeProperties = kmeProperties;
-	}
-
-	/**
-	 * @return the senderKeysProperties
-	 */
-	public Properties getSenderKeysProperties() {
-		return senderKeysProperties;
-	}
-
-	/**
-	 * @param senderKeysProperties the senderKeysProperties to set
-	 */
-	public void setSenderKeysProperties(Properties senderKeysProperties) {
-		this.senderKeysProperties = senderKeysProperties;
 	}
 
 	/**
