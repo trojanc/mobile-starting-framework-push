@@ -82,7 +82,7 @@
 		<property name="templateResolver" ref="templateResolver" />
 		<property name="additionalDialects">
 			<set>
-				<bean class="org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect" />
+				<bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect" />
 			</set>
 		</property>
 	</bean>
