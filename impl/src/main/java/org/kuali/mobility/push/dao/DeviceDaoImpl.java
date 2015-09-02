@@ -38,7 +38,7 @@ import java.util.List;
 
 /**
  * Implementation of the Device Data Access Object.
- * 
+ *
  * @author Kuali Mobility Team (mobility.dev@kuali.org)
  * @since 2.0.0
  */
@@ -56,10 +56,7 @@ public class DeviceDaoImpl implements DeviceDao {
 	 */
 	public DeviceDaoImpl(){}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#findAllDevices()
-	 */
+
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Device> findAllDevices(){
@@ -67,21 +64,13 @@ public class DeviceDaoImpl implements DeviceDao {
 		return query.getResultList();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#findDevicesByUsername(java.lang.String)
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Device> findDevicesByUsername(String username){
 		Query query = getEntityManager().createNamedQuery("Device.findByUsername");
 		query.setParameter("username", username);
 		return query.getResultList();
-	}    
+	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#doesDeviceHaveUsername(java.lang.String)
-	 */
 	public boolean doesDeviceHaveUsername(String deviceid){
 		Query query = getEntityManager().createNamedQuery("Device.hasUsernameForDeviceId");
 		query.setParameter("deviceId", deviceid);
@@ -89,40 +78,29 @@ public class DeviceDaoImpl implements DeviceDao {
 		return (matches.intValue() != 0);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#findDevicesWithoutUsername()
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Device> findDevicesWithoutUsername(){
 		Query query = getEntityManager().createNamedQuery("Device.findDevicesWithoutUsername");
 		return query.getResultList();
 	}
-	
 
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#findDeviceById(java.lang.Long)
-	 */
+
 	@SuppressWarnings("unchecked")
 	public Device findDeviceById(Long id){
 		Query query = getEntityManager().createNamedQuery("Device.findDevicesById");
 		query.setParameter("id", id);
-		Device result; 
+		Device result;
 		try{
 			result = (Device) query.getSingleResult();
 		}catch(Exception e){
 			LOG.info("Exception while trying to find device", e);
 			result = null;
-		}	
+		}
 		return result;
-	}      
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#findDevicesByRegId(java.lang.String)
-	 */
+	}
+
+
 	@SuppressWarnings("unchecked")
 	public Device findDeviceByRegId(String regid){
 		Query query = getEntityManager().createNamedQuery("Device.findDeviceByRegId");
@@ -137,10 +115,7 @@ public class DeviceDaoImpl implements DeviceDao {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#findDevicesByDeviceId(java.lang.String)
-	 */
+
 	@SuppressWarnings("unchecked")
 	public List<Device> findDevicesByDeviceId(String deviceid){
 		// TODO why would there ever by more than one device per Device ID - it should be unique
@@ -149,32 +124,26 @@ public class DeviceDaoImpl implements DeviceDao {
 		return query.getResultList();
 	}
 
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#findDeviceByDeviceId(java.lang.String)
-	 */
-	@SuppressWarnings("unchecked")    
+
+
+	@SuppressWarnings("unchecked")
 	public Device findDeviceByDeviceId(String deviceid){
 		// TODO this method is confusion when looking at the method above, both use the same query but
 		// the above expects a list of results, and this method expects only one result.
 		// If more than one results is returned this method will throw an exception
 		Query query = getEntityManager().createNamedQuery("Device.findDevicesByDeviceId");
 		query.setParameter("deviceId", deviceid);
-		Device result = null; 
+		Device result = null;
 		try{
 			result = (Device) query.getSingleResult();
 		}catch(NoResultException e){
 			LOG.info("Device with specified id does not exist");
-		}	
+		}
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#findDeviceByKeyword(java.lang.String)
-	 */
-    @SuppressWarnings("unchecked")    
+
+	@SuppressWarnings("unchecked")
 	public List<Device> findDevicesByKeyword(String keyword){
 		/*
 		 * Sample Queries:
@@ -189,11 +158,11 @@ public class DeviceDaoImpl implements DeviceDao {
 		 * Creates a Dynamically generated SQL/HQL statement, but still uses bound variables so as to avoid SQL/HQL injection. 
 		 * 
 		 */
-    	
-    	// Separate the keywords.
-    	String[] tokens = keyword.split(" ");
-    	LOG.info("Searching for " + tokens.length + " tokens...");
-    	
+
+		// Separate the keywords.
+		String[] tokens = keyword.split(" ");
+		LOG.info("Searching for " + tokens.length + " tokens...");
+
 //    	// Concatenate sub-wheres
 //    	int i = 0;
 //    	String where = "";
@@ -219,81 +188,77 @@ public class DeviceDaoImpl implements DeviceDao {
 //    		}
 //    	}
 
-    	String where = generateWhereClause(keyword);
-    	
-    	// Remove last "and "
-    	String searchString = "select d from Device d where " + where.substring(0, where.length() - "and ".length()) + " order by d.deviceName";    	
-    	LOG.info("Query: " + searchString);
-    	
-    	
-    	// Create Query
-    	Query query = entityManager.createQuery(searchString);
+		String where = generateWhereClause(keyword);
 
-    	// Bind the HQL variables. 
-    	int i = 0;
-    	for(String s: tokens){
-    		if(!"".equals(s)){
-    			if(s.startsWith("user:")){
-        			query.setParameter("token" + i, "%" + s.substring("user:".length(), s.length()) + "%");
-        			LOG.info("Param: " + "%" + s.substring("user:".length(), s.length()) + "%");
-            		i++;
-    			}else if(s.startsWith("u:")){
-        			query.setParameter("token" + i, "%" + s.substring("u:".length(), s.length()) + "%");
-        			LOG.info("Param: " + "%" + s.substring("u:".length(), s.length()) + "%");
-            		i++;
-    			}else if(s.startsWith("device:")){
-        			query.setParameter("token" + i, "%" + s.substring("device:".length(), s.length()) + "%");
-        			LOG.info("Param: " + "%" + s.substring("device:".length(), s.length()) + "%");
-            		i++;
-    			}else if(s.startsWith("d:")){
-        			query.setParameter("token" + i, "%" + s.substring("d:".length(), s.length()) + "%");
-        			LOG.info("Param: " + "%" + s.substring("d:".length(), s.length()) + "%");
-            		i++;
-    			}else if(s.equals(":ios") || s.equals(":i") || s.equals(":android") || s.equals(":a")){
-        			LOG.info("No need to setParameter.");    			
-    			}else{
-    				query.setParameter("token" + i, "%"+s+"%");    		
-    	    		i++;
-    			}
-    		}
-    	}    	    	
-    	return query.getResultList();
-	}  
-	
-    private String generateWhereClause(String keyword){
-    	// Separate the keywords.
-    	String[] tokens = keyword.split(" ");
-    	LOG.info("Searching for " + tokens.length + " tokens...");
-    	
-    	// Concatenate sub-wheres
-    	int i = 0;
-    	String where = "";
-    	for(String s: tokens){
-    		if(!"".equals(s)){
+		// Remove last "and "
+		String searchString = "select d from Device d where " + where.substring(0, where.length() - "and ".length()) + " order by d.deviceName";
+		LOG.info("Query: " + searchString);
 
-    			if(s.startsWith("user:") || s.startsWith("u:")){
-    				where += "(upper(d.username) like upper(:token" + i + ")) and ";    				
-    	    		i++;
-    			}else if(s.equals(":ios") || s.equals(":i")){
-    				where += "(d.type = 'iOS') and";
-    			}else if(s.equals(":android") || s.equals(":a")){
-    				where += "(d.type = 'Android') and";    				
-    			}else if(s.startsWith("device:") || s.startsWith("d:")){
-    				where += "(upper(d.deviceName) like upper(:token" + i + ")) and";    				
-    	    		i++;
-    			}else{
-        			where += "(d.deviceId like :token" + i + " or d.regId like :token" + i + " or upper(d.deviceName) like upper(:token" + i + ") or upper(d.username) like upper(:token" + i + ")) and ";    				
-            		i++;
-    			}
-    		}
-    	}
-    	return where;
-    }
-    
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#removeDevice(org.kuali.mobility.push.entity.Device)
-	 */
+
+		// Create Query
+		Query query = entityManager.createQuery(searchString);
+
+		// Bind the HQL variables.
+		int i = 0;
+		for(String s: tokens){
+			if(!"".equals(s)){
+				if(s.startsWith("user:")){
+					query.setParameter("token" + i, "%" + s.substring("user:".length(), s.length()) + "%");
+					LOG.info("Param: " + "%" + s.substring("user:".length(), s.length()) + "%");
+					i++;
+				}else if(s.startsWith("u:")){
+					query.setParameter("token" + i, "%" + s.substring("u:".length(), s.length()) + "%");
+					LOG.info("Param: " + "%" + s.substring("u:".length(), s.length()) + "%");
+					i++;
+				}else if(s.startsWith("device:")){
+					query.setParameter("token" + i, "%" + s.substring("device:".length(), s.length()) + "%");
+					LOG.info("Param: " + "%" + s.substring("device:".length(), s.length()) + "%");
+					i++;
+				}else if(s.startsWith("d:")){
+					query.setParameter("token" + i, "%" + s.substring("d:".length(), s.length()) + "%");
+					LOG.info("Param: " + "%" + s.substring("d:".length(), s.length()) + "%");
+					i++;
+				}else if(s.equals(":ios") || s.equals(":i") || s.equals(":android") || s.equals(":a")){
+					LOG.info("No need to setParameter.");
+				}else{
+					query.setParameter("token" + i, "%"+s+"%");
+					i++;
+				}
+			}
+		}
+		return query.getResultList();
+	}
+
+	private String generateWhereClause(String keyword){
+		// Separate the keywords.
+		String[] tokens = keyword.split(" ");
+		LOG.info("Searching for " + tokens.length + " tokens...");
+
+		// Concatenate sub-wheres
+		int i = 0;
+		String where = "";
+		for(String s: tokens){
+			if(!"".equals(s)){
+
+				if(s.startsWith("user:") || s.startsWith("u:")){
+					where += "(upper(d.username) like upper(:token" + i + ")) and ";
+					i++;
+				}else if(s.equals(":ios") || s.equals(":i")){
+					where += "(d.type = 'iOS') and";
+				}else if(s.equals(":android") || s.equals(":a")){
+					where += "(d.type = 'Android') and";
+				}else if(s.startsWith("device:") || s.startsWith("d:")){
+					where += "(upper(d.deviceName) like upper(:token" + i + ")) and";
+					i++;
+				}else{
+					where += "(d.deviceId like :token" + i + " or d.regId like :token" + i + " or upper(d.deviceName) like upper(:token" + i + ") or upper(d.username) like upper(:token" + i + ")) and ";
+					i++;
+				}
+			}
+		}
+		return where;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public boolean removeDevice(Device device){
@@ -313,81 +278,61 @@ public class DeviceDaoImpl implements DeviceDao {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.service.DeviceDao#removeAllDevicesWithUsername(java.lang.String)
-	 */
 	@Transactional
 	public boolean removeAllDevicesWithUsername(String username){
-    	boolean result = true;
-    	List<Device> devices = this.findDevicesByUsername(username);
-    	Query query = entityManager.createQuery("delete from Device where username = :username");   
-        query.setParameter("username", username);
-        result = (query.executeUpdate() > 0) ? true : false;
+		boolean result = true;
+		List<Device> devices = this.findDevicesByUsername(username);
+		Query query = entityManager.createQuery("delete from Device where username = :username");
+		query.setParameter("username", username);
+		result = (query.executeUpdate() > 0) ? true : false;
 
-        LOG.info("****** Found " + devices.size() + " devices with username " + username + " to delete.");
-    	return result;
+		LOG.info("****** Found " + devices.size() + " devices with username " + username + " to delete.");
+		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.service.DeviceDao#removeAllDevices()
-	 */
 	@Transactional
 	public boolean removeAllDevices(){
-    	boolean result = true;
-    	List<Device> devices = this.findAllDevices();
-    	LOG.info("****** Found " + devices.size() + " devices to delete.");
-    	Query query = entityManager.createQuery("delete from Device");    	    	    	
-    	result = (query.executeUpdate() > 0) ? true : false;
+		boolean result = true;
+		List<Device> devices = this.findAllDevices();
+		LOG.info("****** Found " + devices.size() + " devices to delete.");
+		Query query = entityManager.createQuery("delete from Device");
+		result = (query.executeUpdate() > 0) ? true : false;
 
-    	LOG.info("****** Deleted " + result + " devices.");
-    	return result;
+		LOG.info("****** Deleted " + result + " devices.");
+		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.service.DeviceDao#removeAllDevicesByType(java.lang.String)
-	 */
 	@Transactional
 	public boolean removeAllDevicesByType(String type){
 		boolean result = true;
-    	List<Device> devices = this.findAllDevices(type);	
-    	LOG.info("****** Found " + devices.size() + " Android devices to delete.");
-    	Query query = entityManager.createQuery("delete from Device where type = :type");   
-    	query.setParameter("type", type);
-    	result = (query.executeUpdate() > 0) ? true : false;
+		List<Device> devices = this.findAllDevices(type);
+		LOG.info("****** Found " + devices.size() + " Android devices to delete.");
+		Query query = entityManager.createQuery("delete from Device where type = :type");
+		query.setParameter("type", type);
+		result = (query.executeUpdate() > 0) ? true : false;
 
-    	LOG.info("****** Deleted " + result + " " + type + " devices.");
-    	return result;
+		LOG.info("****** Deleted " + result + " " + type + " devices.");
+		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.service.DeviceDao#removeAllDevicesBefore(java.sql.Timestamp)
-	 */
 	@Transactional
 	public boolean removeAllDevicesBefore(Timestamp ts){
-    	boolean result = true;
+		boolean result = true;
 
-        Query query = entityManager.createQuery("select d from Device d where d.postedTimestamp < :ts");
-        query.setParameter("ts", ts);
-        List<Device> devices = query.getResultList();
-        LOG.info("****** Found " + devices.size() + " devices registered or updated before " + ts);
-        
-        query = entityManager.createQuery("delete from Device where postedTimestamp < :ts");
-        query.setParameter("ts", ts);
-    	result = (query.executeUpdate() > 0) ? true : false;
+		Query query = entityManager.createQuery("select d from Device d where d.postedTimestamp < :ts");
+		query.setParameter("ts", ts);
+		List<Device> devices = query.getResultList();
+		LOG.info("****** Found " + devices.size() + " devices registered or updated before " + ts);
 
-        LOG.info("****** Deleted " + result + " devices registered or updated before " + ts);
-    	return result;
+		query = entityManager.createQuery("delete from Device where postedTimestamp < :ts");
+		query.setParameter("ts", ts);
+		result = (query.executeUpdate() > 0) ? true : false;
+
+		LOG.info("****** Deleted " + result + " devices registered or updated before " + ts);
+		return result;
 	}
-	
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#saveDevice(org.kuali.mobility.push.entity.Device)
-	 */
+
+
 	@Transactional
 	public Device saveDevice(Device device){
 		if(device == null){
@@ -404,44 +349,28 @@ public class DeviceDaoImpl implements DeviceDao {
 			}
 			LOG.debug("saveDevice: Device ID is "+device.getId()+" post operation.");
 		}
-        return device;
+		return device;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#registerDevice(org.kuali.mobility.push.entity.Device)
-	 */
+
 	@Override
 	@Transactional
 	public void registerDevice(Device device) {
 		this.saveDevice(device);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#countDevices()
-	 */
 	@SuppressWarnings("unchecked")
 	public Long countDevices(){
 		Query query = getEntityManager().createNamedQuery("Device.countDevices");
 		return (Long)query.getSingleResult();
 	}
 
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#countDevicesWithoutUsername()
-	 */
+
 	@SuppressWarnings("unchecked")
 	public Long countDevicesWithoutUsername(){
 		Query query = getEntityManager().createNamedQuery("Device.countDevicesWithoutUsername");
 		return (Long)query.getSingleResult();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#countDevices(java.lang.String)
-	 */
 	@Override
 	public Long countDevices(String deviceType) {
 		Query query = this.getEntityManager().createNamedQuery("Device.countDevicesForType");
@@ -449,35 +378,27 @@ public class DeviceDaoImpl implements DeviceDao {
 		return (Long)query.getSingleResult();
 	}
 
-	
- 	public Long countDevicesBefore(Timestamp ts){
+
+	public Long countDevicesBefore(Timestamp ts){
 		Query query = this.getEntityManager().createNamedQuery("Device.countDevicesBefore");
 		query.setParameter("timeStamp", ts);
-		return (Long)query.getSingleResult(); 		
- 	}
+		return (Long)query.getSingleResult();
+	}
 
- 	public Long countDevicesWithUsername(String username){
+	public Long countDevicesWithUsername(String username){
 		Query query = this.getEntityManager().createNamedQuery("Device.countDevicesWithUsername");
 		query.setParameter("username", username);
-		return (Long)query.getSingleResult(); 		
- 	}
- 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#findAllDevices(java.lang.String)
-	 */
+		return (Long)query.getSingleResult();
+	}
+
 	@Override
 	public List<Device> findAllDevices(String deviceType) {
 		Query query = this.getEntityManager().createNamedQuery("Device.findDevicesForType");
 		query.setParameter("deviceType", deviceType);
 		return query.getResultList();
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.kuali.mobility.push.dao.DeviceDao#findDevicesByType(java.lang.String)
-	 */
-	@Override	
+
+	@Override
 	public List<Device> findDevicesByType(String type){
 		return this.findAllDevices(type);
 	}

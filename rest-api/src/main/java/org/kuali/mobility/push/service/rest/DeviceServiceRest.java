@@ -36,16 +36,16 @@ import javax.ws.rs.core.MediaType;
 public interface DeviceServiceRest {
 
     /** Device type constant for Android devices */
-    public static final String TYPE_ANDROID 	= "Android";
+    String TYPE_ANDROID 	= "Android";
 
     /** Devices type constant for iOS devices */
-    public static final String TYPE_IOS			= "iOS";
+   String TYPE_IOS			= "iOS";
 
     /** Device type constant for BlackBerry devices */
-    public static final String TYPE_BLACKBERRY 	= "BlackBerry";
+   String TYPE_BLACKBERRY 	= "BlackBerry";
 
     /** Device type constraint for Windows devices */
-    public static final String TYPE_WINDOWS		= "WindowsMobile";
+    String TYPE_WINDOWS		= "WindowsMobile";
 
     /**
      * Persists a device and returns the updated device
