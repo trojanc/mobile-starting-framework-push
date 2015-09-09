@@ -1,0 +1,63 @@
+<div id="mainPushPage" class="list-group inset-content-10px" ng-show="showMainPushPage" ng-init="showMainPushPage=true">
+	<form>
+
+
+		<th:block th:if="${device != null}">
+			<input type="hidden" name="id" th:value="${device.id}" ng-model="id" th:attr="ng-init='id=\'__${device.id}__\''"/>
+			<input type="hidden" name="deviceId" th:value="${device.deviceId}" ng-model="deviceId" th:attr="ng-init='deviceId=\'__${device.deviceId}__\''"/>
+			<label th:text="#{push.message.recipient}"></label>
+			<div class="list-group" style="margin-top: 10px;">
+				<div class="list-group-item">
+					<strong th:text="${device.deviceName}"></strong><br>
+					<th:block th:text="#{push.devices.username}" /> : <span style="color:darkred;" th:text="${device.username}"></span><br>
+					<th:block th:text="#{push.device.type}" />      : <th:block th:text="${device.type}" /><br>
+					<p class="wrap"><th:block th:text="#{push.device.devid}" />:<th:block th:text="${device.deviceId}" /></p>
+				</div>
+			</div>
+		</th:block>
+
+
+		<th:block th:if="${device == null}">
+			<label for="recipientselect" th:text="#{push.message.recipients}"></label>
+			<select id="recipientselect" name="recipientselect" class="form-control" style="margin-bottom: 15px;" ng-model="recipientselect" ng-init="recipientselect='nil'" ng-change="onRecipientSelectChange()">
+				<option value="nil" selected th:text="#{push.message.select.recipients}"></option>
+				<option th:each="msg : ${recipients}" th:value="${msg.value}" th:text="${msg.key}"></option>
+			</select>
+		</th:block>
+
+		<!--<input type="hidden" name="sender" th:value="${cookie.currentNetworkId.value}" ng-model="sender"/>-->
+
+		<label for="pushselect"><th:block th:text="#{push.messages}" /></label>
+		<select id="pushselect" name="pushselect" class="form-control" style="margin-bottom: 15px;" ng-model="pushselect" ng-init="pushselect='nil'" ng-change="onPushSelectChange()">
+			<option value="nil" selected th:text="#{push.message.select.redefined}"></option>
+			<option th:each="msg : ${stockPushMessages}" th:value="${msg.value}" th:text="${msg.key}"></option>
+		</select>
+
+		<div class="form-group">
+			<label for="inputTitle" th:text="#{push.message.title}"></label>
+			<input type="text" class="form-control" id="inputTitle" ng-model="inputTitle" th:placeholder="#{push.message.title}">
+		</div>
+
+		<div class="form-group">
+			<label class="control-label" for="inputMessage" th:text="#{push.message.body}"></label>
+			<textarea rows="3" class="form-control" id="inputMessage" ng-model="inputMessage" th:placeholder="#{push.message.body}"></textarea>
+		</div>
+
+		<div class="form-group">
+			<label for="inputUrl" th:text="#{push.message.url}"></label>
+			<input type="text" class="form-control" id="inputUrl" ng-model="inputUrl" th:placeholder="#{push.message.url.optional}">
+		</div>
+
+		<div class="form-group">
+			<label class="control-label" th:text="#{push.message.emergency}"></label>
+			<div>
+				<input type="checkbox" name="inputEmergency" ng-model="inputEmergency" value="no"> <th:block th:text="#{push.message.is.an.emergnecy}" />
+			</div>
+		</div>
+
+		<div class="form-group pull-right">
+			<a class="btn btn-default" ng-click="clearPush()" th:text="#{push.message.clear}"></a>
+			<a class="btn btn-kme" ng-click="sendPush()" ng-disabled="!(inputTitle && inputMessage)" th:text="#{push.message.send}"></a>
+		</div>
+	</form>
+</div>

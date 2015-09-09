@@ -1,0 +1,25 @@
+<div class="alert alert-danger" ng-repeat="error in errors.error">{{error.name}}</div>
+
+<div id="mainHistoryPage" class="list-group inset-content-10px"
+	 ng-show="showMainHistoryPage" ng-init="showMainHistoryPage=true">
+	<div class="list-group-item list-header">Past Notifications</div>
+	<a ng-click="goTo(thisNotification.url)" class="list-group-item"
+	   ng-repeat="thisNotification in notifications">
+		<h5 class="list-group-item-heading">
+			{{thisNotification.title}}
+			<div class="glyphicon glyphicon-chevron-right pull-right" ng-show="thisNotification.url.length" ng-cloak></div>
+		</h5>
+		<p class="list-group-item-text">
+		<p style="padding-bottom: 10px;">{{thisNotification.message}}</p>
+		Recipients: {{thisNotification.recipients}}<br> <span
+			ng-show="thisNotification.url.length" ng-cloak>URL:
+					{{thisNotification.url}}<br>
+			</span> Sent on {{thisNotification.sentTimeStamp | date:'medium'}}
+		</p>
+	</a>
+	<div id="prevnext" class="pull-right pagination-div">
+		<span pul>Showing Page {{currentPage}} , {{pageRecordStartIndex}} to {{pageRecordEndIndex}} Notifications out of  {{totalNotifications}}  Notifications</span>
+		<input type="button" class="btn prev" value="Prev" ng-click="goToPrevPage()"/>
+		<input type="button" class="btn next" value="Next" ng-click="goToNextPage()"/>
+	</div>
+</div>
