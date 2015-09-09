@@ -53,7 +53,7 @@
     <security:http security="none" pattern="/img/**" />
     <security:http security="none" pattern="/fonts/**" />
     <security:http security="none" pattern="/js/**/bootstrap.min.js" />
-	<security:http security="none" pattern="/services/**" />
+	<security:http security="none" pattern="/services/public/**" />
 
     <security:http disable-url-rewriting="true" use-expressions="false">
         <security:http-basic />

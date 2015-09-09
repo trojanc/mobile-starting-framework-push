@@ -37,7 +37,7 @@ import java.util.List;
 public class DevicesResponse extends ServiceObject{
 
 	@XmlElementWrapper(name="devices")
-	@XmlElement(name = "device")
+	@XmlElement(name = "devices")
 	private List<Device> devices;
 
 	public DevicesResponse(){};
