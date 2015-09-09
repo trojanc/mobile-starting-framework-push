@@ -264,16 +264,4 @@ public class Sender implements Serializable {
 				"\npostedTimestamp="+ postedTimestamp + "\n";
 	}
 
-	public String toJson() {
-		return "{" + 
-				"\"id\":\"" + id + "\"," + 
-				"\"name\":\"" + name +  "\"," +
-				"\"shortName\":\"" + shortName +  "\"," + 
-				"\"hidden\":\"" + (hidden?"true":"false") +  "\"," + 
-				"\"description\":\"" + description +  "\"," +
-				"\"username\":\"" + username +  "\"," +
-				"\"senderKey\":\"" + senderKey +  "\"," +
-				"\"postedTimestamp\":\""+ postedTimestamp +  "\"}" ;
-	}
-
 }

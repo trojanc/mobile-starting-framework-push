@@ -99,7 +99,6 @@
 	<!-- Deprecated CXF Services -->
 	<bean id="cxfDeviceService" class="org.kuali.mobility.push.service.CXFDeviceService"/>
 	<bean id="cxfPushService" class="org.kuali.mobility.push.service.CXFPushService"/>
-	<bean id="cxfSenderService" class="org.kuali.mobility.push.service.CXFSenderService"></bean>
 
     <bean id="deviceRestService" class="org.kuali.mobility.push.service.rest.DeviceServiceRestImpl"></bean>
     <bean id="pushRestService" class="org.kuali.mobility.push.service.rest.PushServiceRestImpl"></bean>
@@ -111,18 +110,6 @@
     <bean id="jackonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider">
     </bean>
 
-
-
-	<jaxrs:server id="senderRestEndpoint" address="/sender">
-        <jaxrs:serviceBeans>
-            <ref bean="cxfSenderService" />
-        </jaxrs:serviceBeans>
-        <jaxrs:extensionMappings>
-            <entry key="json" value="application/json"/>
-            <entry key="xml" value="application/xml"/>
-        </jaxrs:extensionMappings>
-    </jaxrs:server>	
-		 
     <jaxrs:server id="pushRestEndpoint" address="/push" >
         <jaxrs:serviceBeans>
             <ref bean="cxfPushService" />

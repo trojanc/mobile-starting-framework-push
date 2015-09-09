@@ -1,0 +1,40 @@
+
+<div id="searchDevicesPage" class="list-group inset-content-10px" ng-show="showSearchDevicesPage" ng-init="showSearchDevicesPage=false">
+	<div class="input-group">
+		<span class="input-group-addon"><div class="glyphicon glyphicon-search pull-right"></div></span>
+		<input type="text" class="form-control" ng-model="searchKeyword" ng-change="onKeywordChange()" th:placeholder="#{push.devices.management.search}" />
+			<span class="input-group-btn">
+		        <button class="btn btn-default" type="button" ng-click="clearSearch()"><span class="glyphicon glyphicon-remove"></span></button>
+      		</span>
+	</div>
+	<div class="list-group" style="margin-top: 10px;" ng-show="!showSearchResults" ng-cloak="">
+		<div class="list-group-item">
+			<h4 class="list-group-item-heading" th:text="#{push.devices.search.at.least.three}"></h4>
+		</div>
+		<div class="list-group-item">
+			<p>
+				<strong>Simple Search</strong><br/>
+				Keyword = "jsmith ipad"<br/></p>
+			<p>
+				<strong>Parameterized Search</strong><br/>
+				Username = "user:jsmith"<br/>
+				Device Name = "device:ipad"<br/>
+				Device Type = ":ios" or ":android"<br/></p>
+			<p>
+				<strong>Combined Search</strong><br/>
+				"user:jsmith device:Bonk :android"<br/>
+				"u:jsmith d:Bonk :a"</p>
+		</div>
+	</div>
+	<div class="list-group" style="margin-top: 10px;" ng-show="!searchResults.length && showSearchResults" ng-cloak="">
+		<div class="list-group-item">
+			<h4 class="list-group-item-heading" th:text="#{push.devices.search.none.found}"></h4>
+		</div>
+	</div>
+	<div class="list-group" style="margin-top: 10px;" ng-show="searchResults.length && showSearchResults" ng-cloak="">
+		<a ng-click="detailDevicePage(result)" class="list-group-item" ng-repeat="result in searchResults">
+			<h4 class="list-group-item-heading">{{result.deviceName}}<div class="glyphicon glyphicon-chevron-right pull-right"></div></h4>
+			<th:block th:text="#{push.devices.username}" /> : <span style="color:darkred;">{{result.username | nullUsername}}</span>
+		</a>
+	</div>
+</div>
