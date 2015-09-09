@@ -1,0 +1,12 @@
+<div id="mainDevicePage" class="list-group">
+	<a href="#create" class="list-group-item">
+		<h4 class="list-group-item-heading">Create Sender<div class="glyphicon glyphicon-chevron-right pull-right"></div></h4>
+		<p class="list-group-item-text">Create a new sender</p>
+	</a>
+	<div class="list-group-item list-header">Senders</div>
+	<a ng-click="editSender(thisSender)" class="list-group-item" ng-repeat="thisSender in senders">
+		<h4 class="list-group-item-heading">{{thisSender.name}}<div class="glyphicon glyphicon-chevron-right pull-right"></div></h4>
+		<span style="color:darkred;" ng-show="thisSender.hidden">ADMIN - Can't be disabled by user.</span>
+		<p class="list-group-item-text">{{thisSender.description}}</p>
+	</a>
+</div>

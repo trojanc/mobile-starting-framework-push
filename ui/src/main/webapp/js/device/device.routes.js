@@ -6,9 +6,9 @@
 		.config(['$routeProvider',
 			function($routeProvider) {
 				$routeProvider
-					.when('/', 			{templateUrl: contextPath + 'html/device/menu.html'})
-					.when('/search',	{templateUrl: contextPath + 'html/device/search.html'})
-					.when('/purge',		{templateUrl: contextPath + 'html/device/purge.html'})
+					.when('/', 			{templateUrl: contextPath + '/html/device/menu.html'})
+					.when('/search',	{templateUrl: contextPath + '/html/device/search.html'})
+					.when('/purge',		{templateUrl: contextPath + '/html/device/purge.html'})
 					.otherwise({ redirectTo: '/' });
 			}]);
 })(angular);

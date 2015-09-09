@@ -1,0 +1,43 @@
+<div id="newSenderPage" class="list-group">
+	<form>
+		<input type="hidden" id="inputId" name="inputId" ng-model="inputId">
+		<div class="form-group">
+			<label for="inputName" th:text="#{push.senders.name}"></label>
+			<input type="text" class="form-control" id="inputName" ng-model="inputName" th:placeholder="#{push.senders.name}">
+		</div>
+
+		<div class="form-group">
+			<label for="inputShortName" th:text="#{push.senders.shortname}"></label>
+			<input type="text" class="form-control" id="inputShortName" ng-model="inputShortName" th:placeholder="#{push.senders.shortname}">
+		</div>
+
+
+		<div class="form-group">
+			<label class="control-label" for="inputDescription" th:text="#{push.senders.description}"></label>
+			<textarea rows="3" class="form-control" id="inputDescription" ng-model="inputDescription" th:placeholder="#{push.senders.description}"></textarea>
+		</div>
+
+		<div class="form-group">
+			<label for="inputSenderKey" th:text="#{push.senders.senderkey}"></label>
+			<div class="input-group">
+	                <span class="input-group-btn">
+	 	               <button type="button" class="btn btn-default" ng-click="newKey()"><span class="glyphicon glyphicon-refresh"></span></button>
+	                </span>
+				<input type="text" class="form-control" id="inputSenderKey" ng-model="inputSenderKey" placeholder="">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label" th:text="#{push.senders.user.blockable}"></label>
+			<div>
+				<input type="checkbox" name="inputUserBlockable" ng-model="inputUserBlockable" value="no"> <th:block th:text="#{push.senders.users.maynotblock}"/>
+			</div>
+		</div>
+
+		<div class="form-group pull-right">
+			<a class="btn btn-default" ng-click="cancelNewSender()" th:text="#{push.senders.cancel}"></a>
+			<a class="btn btn-default" ng-click="deleteSender()" ng-show="showDeleteButton" th:text="#{push.senders.delete}"></a>
+			<a class="btn btn-kme" ng-click="saveSender()" th:text="#{push.senders.save}"></a>
+		</div>
+	</form>
+</div>
