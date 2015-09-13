@@ -8,6 +8,7 @@
 				$routeProvider
 					.when('/', 			{templateUrl: contextPath + '/html/device/menu.html'})
 					.when('/search',	{templateUrl: contextPath + '/html/device/search.html', controller : 'SearchDevicesController'})
+					.when('/details/{{deviceId}}',	{templateUrl: contextPath + '/html/device/search.html', controller : 'DeviceDetailsController'})
 					.when('/purge',		{templateUrl: contextPath + '/html/device/purge.html'})
 					.otherwise({ redirectTo: '/' });
 			}]);

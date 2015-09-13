@@ -1,34 +1,33 @@
-
-<div id="deviceDetailPage" class="list-group inset-content-10px" ng-show="showDeviceDetailPage" ng-init="showDeviceDetailPage=false">
+<div id="deviceDetailPage" class="list-group inset-content-10px" >
 	<div class="list-group" style="margin-top: 10px;">
 		<div class="list-group-item list-header"><h4 class="list-group-item-heading">{{detailDeviceName}}</h4></div>
 		<div class="list-group-item">
-			<h4 class="list-group-item-heading" th:text="#{push.devices.username}"></h4>
+			<h4 class="list-group-item-heading">Username</h4>
 			<span style="color:darkred;">{{detailUsername | nullUsername}}</span>
 		</div>
 		<div class="list-group-item">
-			<h4 class="list-group-item-heading" th:text="#{push.device.type}"></h4>
+			<h4 class="list-group-item-heading">Type</h4>
 			{{detailDeviceType}}
 		</div>
 
 		<div class="list-group-item">
-			<h4 class="list-group-item-heading" th:text="#{push.device.devid}"></h4>
+			<h4 class="list-group-item-heading">Device ID</h4>
 			{{detailDevId}}
 		</div>
 		<div class="list-group-item">
-			<h4 class="list-group-item-heading" th:text="#{push.device.regid}"></h4>
+			<h4 class="list-group-item-heading">Registration ID</h4>
 			{{detailRegId}}
 		</div>
 		<div class="list-group-item">
-			<h4 class="list-group-item-heading" th:text="#{push.device.registrationDate}"></h4>
+			<h4 class="list-group-item-heading">Registration Date</h4>
 			{{detailRegDate | date:'medium'}}
 		</div>
 	</div>
 	<div class="list-group" style="margin-top: 10px;">
 		<div class="form-group pull-right">
-			<a class="btn btn-default" ng-click="kmeNavLeft()" th:text="#{push.device.cancel}"></a>
-			<a class="btn btn-default" ng-click="removeDevice()" th:text="#{push.device.remove}"></a>
-			<a class="btn btn-kme" ng-click="sendPush()" th:text="#{push.message.send}"></a>
+			<a class="btn btn-default" ng-click="kmeNavLeft()">Cancel</a>
+			<a class="btn btn-default" ng-click="removeDevice()">Remove</a>
+			<a class="btn btn-kme" ng-click="sendPush()">Send</a>
 		</div>
 	</div>
 </div>
