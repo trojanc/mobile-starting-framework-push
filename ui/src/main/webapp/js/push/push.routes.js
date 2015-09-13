@@ -8,6 +8,7 @@
 				$routeProvider
 					.when('/', 			{templateUrl: contextPath + '/html/push/menu.html'})
 					.when('/send',		{templateUrl: contextPath + '/html/push/send.html'})
+					.when('/send/:id',	{templateUrl: contextPath + '/html/push/send.html'})
 					.when('/history',	{templateUrl: contextPath + '/html/push/history.html'})
 					.when('/queue',		{templateUrl: contextPath + '/html/push/queue.html'})
 					.otherwise({ redirectTo: '/' });

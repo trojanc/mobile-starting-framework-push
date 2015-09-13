@@ -1,29 +1,27 @@
-<div id="mainPushPage" class="list-group inset-content-10px" ng-show="showMainPushPage" ng-init="showMainPushPage=true">
+<div id="mainPushPage" class="list-group inset-content-10px">
 	<form>
 
 
-		<th:block th:if="${device != null}">
-			<input type="hidden" name="id" th:value="${device.id}" ng-model="id" th:attr="ng-init='id=\'__${device.id}__\''"/>
-			<input type="hidden" name="deviceId" th:value="${device.deviceId}" ng-model="deviceId" th:attr="ng-init='deviceId=\'__${device.deviceId}__\''"/>
-			<label th:text="#{push.message.recipient}"></label>
+		<div ng-show="device != null">
+			<label>Recipient</label>
 			<div class="list-group" style="margin-top: 10px;">
 				<div class="list-group-item">
-					<strong th:text="${device.deviceName}"></strong><br>
-					<th:block th:text="#{push.devices.username}" /> : <span style="color:darkred;" th:text="${device.username}"></span><br>
-					<th:block th:text="#{push.device.type}" />      : <th:block th:text="${device.type}" /><br>
-					<p class="wrap"><th:block th:text="#{push.device.devid}" />:<th:block th:text="${device.deviceId}" /></p>
+					<strong>Device Name</strong><br>
+					Username : <span style="color:darkred;">{{device.username}</span><br>
+					Type     : {{device.type}}><br>
+					<p class="wrap">Device ID: {{device.deviceId}}></p>
 				</div>
 			</div>
-		</th:block>
+		</div>
 
 
-		<th:block th:if="${device == null}">
+		<div>
 			<label for="recipientselect" th:text="#{push.message.recipients}"></label>
 			<select id="recipientselect" name="recipientselect" class="form-control" style="margin-bottom: 15px;" ng-model="recipientselect" ng-init="recipientselect='nil'" ng-change="onRecipientSelectChange()">
 				<option value="nil" selected th:text="#{push.message.select.recipients}"></option>
 				<option th:each="msg : ${recipients}" th:value="${msg.value}" th:text="${msg.key}"></option>
 			</select>
-		</th:block>
+		</div>
 
 		<!--<input type="hidden" name="sender" th:value="${cookie.currentNetworkId.value}" ng-model="sender"/>-->
 
