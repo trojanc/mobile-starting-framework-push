@@ -80,6 +80,11 @@ public class DeviceServiceRestImpl implements DeviceServiceRest {
 	}
 
 	@Override
+	public DeviceResponse findDeviceById(Long id) {
+		return new DeviceResponse(deviceService.findDeviceById(id));
+	}
+
+	@Override
 	public DeviceResponse findDeviceByDeviceId(String deviceId) {
 		return new DeviceResponse(deviceService.findDeviceByDeviceId(deviceId));
 	}

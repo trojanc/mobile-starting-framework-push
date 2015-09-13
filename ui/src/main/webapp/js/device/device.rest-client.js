@@ -11,6 +11,10 @@
             'devices' : function() {
                 return this._callService('GET', 'device-api/devices/');
 
+            },
+            'findDeviceById' : function(id) {
+                return this._callService('GET', 'device-api/findDeviceById/', null, {'id': id});
+
             }
         }, RestServiceBase);
 

@@ -78,7 +78,17 @@ public interface DeviceServiceRest {
 
     /**
      * Finds a <code>Device</code> by the Object ID for the <code>Device</code>
-     * @param deviceId If of the <code>Device</code> to find.
+     * @param id Id of the <code>Device</code> to find.
+     * @return
+     */
+    @GET
+    @Path("/findDeviceById")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    DeviceResponse findDeviceById(@QueryParam(value="id") Long id);
+
+    /**
+     * Finds a <code>Device</code> by the Object ID for the <code>Device</code>
+     * @param deviceId Id of the <code>Device</code> to find.
      * @return
      */
     @GET
